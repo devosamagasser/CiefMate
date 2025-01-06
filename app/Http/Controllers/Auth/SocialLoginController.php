@@ -2,67 +2,124 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use App\Facades\ApiResponse;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Services\AuthServices;
 use Laravel\Socialite\Facades\Socialite;
-use Dedoc\Scramble\Attributes\ExcludeRouteFromDocs;
-
+use Laravel\Socialite\Two\InvalidStateException;
 
 /**
- * @tags Auth
+ * @OA\Tag(
+ *     name="Auth",
+ *     description="Authentication endpoints"
+ * )
  */
 class SocialLoginController extends Controller
 {
-
-    public function __construct(public AuthServices $authServices)
+    public function __construct(public AuthServices $authServices, private Socialite $socialite)
     {
-        
+        //
     }
 
-    public $providers = ['google'];
-
     /**
-     * Social Login
-     * 
-     * providers [google]
-     * @param $provider
+     * @OA\Get(
+     *     path="/api/auth/{provider}/redirect",
+     *     summary="Redirect to provider for social login",
+     *     tags={"Auth"},
+     *     @OA\Parameter(
+     *         name="provider",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"google", "facebook", "github"})
+     *     ),
+     *     @OA\Response(
+     *         response=302,
+     *         description="Redirect to provider's login page"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Provider not supported",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Provider not supported"),
+     *             @OA\Property(property="code", type="integer", example=400)
+     *         )
+     *     )
+     * )
      */
     public function redirect($provider)
     {
-        return (in_array($provider,$this->providers)) ?
-            Socialite::driver($provider)->stateless()->redirect()
-            : 
-            $this->providerNotSupported();
+        try {
+
+            if (!in_array($provider, config('services.socialite_providers'))) {
+                return $this->providerNotSupported();
+            }
+            
+            return $this->socialite::driver($provider)->stateless()->redirect();
+        } catch (\Exception $e) {
+            return ApiResponse::serverError($e->getMessage());
+        }
     }
 
-    #[ExcludeRouteFromDocs]
-    public function callBack($provider) 
+    /**
+     * @OA\Get(
+     *     path="/api/auth/callback/{provider}",
+     *     summary="Handle provider callback",
+     *     tags={"Auth"},
+     *     @OA\Parameter(
+     *         name="provider",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"google", "facebook", "github"})
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9..."),
+     *             @OA\Property(property="token_type", type="string", example="bearer"),
+     *             @OA\Property(property="user", ref="#/components/schemas/User")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Provider not supported",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Provider not supported"),
+     *             @OA\Property(property="code", type="integer", example=400)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Failed to process this action, please try again."),
+     *             @OA\Property(property="code", type="integer", example=500)
+     *         )
+     *     )
+     * )
+     */
+    public function callBack($provider)
     {
         try {
-            $user = Socialite::driver($provider)->stateless()->user();
-            $data = $this->authServices->prepareUserData($user,$provider);
-            $user = User::updateOrCreate(
-                ['email' => $data['email']],
-                $data
-            );
+            if (!in_array($provider, config('services.socialite_providers'))) {
+                return $this->providerNotSupported();
+            }
 
-            $token = $this->authServices->generateToken($user,$data['email']);
+            $providerUser = $this->socialite::driver($provider)->stateless()->user();
+            return $this->authServices->handleSocialLogin($providerUser, $provider);
 
-            return $this->authServices->respondWithToken($user,$token);
-
+        } catch (InvalidStateException $e) {
+            return ApiResponse::message('Invalid state. Please try again.', Response::HTTP_BAD_REQUEST);
         } catch (\Exception $e) {
             return ApiResponse::serverError();
         }
-
     }
 
     private function providerNotSupported()
     {
         return ApiResponse::message(
-            'provider not supported',
+            'Provider not supported',
             Response::HTTP_BAD_REQUEST
         );
     }

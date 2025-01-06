@@ -5,6 +5,41 @@ namespace App\Http\Controllers\Facades;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
+/**
+ * @OA\SecurityScheme(
+ *     securityScheme="Bearer",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     name="Authorization",
+ *     in="header",
+ * )
+ *
+ * @OA\Info(
+ *     title="Chief-Mate",
+ *     version="1.0.0",
+ *     description="API documentation for Chief-Mate Application",
+ *     @OA\Contact(
+ *         name="Osama Gasser",
+ *         email="devosamagasser@gmail.com"
+ *     ),
+ *     @OA\License(
+ *         name="Developed by Osama Gasser",
+ *         url="https://example.com"
+ *     )
+ * )
+ * 
+ *  * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="John Doe"),
+ *     @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+ *     @OA\Property(property="avatar", type="string", example="avatars/avatar.jpg"),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class ApiResponseController extends Controller
 {
     /**
@@ -13,7 +48,7 @@ class ApiResponseController extends Controller
      * @param $code
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|Response
      */
-    function apiFormat($info,$message = null,$code)
+    function apiFormat($info,$message = null,$code= Response::HTTP_OK)
     {
         $response = [
             'code' => $code,
@@ -26,41 +61,6 @@ class ApiResponseController extends Controller
         }
 
         return Response($response,$code);
-    }
-
-    public function success($data,$message = null,$code = Response::HTTP_OK)
-    {
-        return $this->apiFormat(
-            ['data' => $data],
-            $message,
-            $code
-        );
-    }
-
-    public function message($message,$code = Response::HTTP_OK)
-    {
-        return $this->apiFormat(
-            null,
-            $message,
-            $code
-        );
-    }
-    
-    public function created($data,$message = 'created successfully')
-    {
-        return $this->success(
-            $data,
-            $message,
-            Response::HTTP_CREATED
-        );
-    }
-
-    public function updated($data,$message = 'updated successfully')
-    {
-        return $this->success(
-            $data, 
-            $message
-        );
     }
 
     public function notFound($message)
@@ -80,21 +80,61 @@ class ApiResponseController extends Controller
         );
     }
 
-    public function validationError($errors,$message = 'validation error')
+    public function success($data,$message = null,$code = Response::HTTP_OK)
+    {
+        return $this->apiFormat(
+            ['data' => $data],
+            $message,$code
+        );
+    }
+
+    public function message($message,$code = Response::HTTP_OK)
+    {
+        return $this->apiFormat(
+            null,
+            $message,
+            $code
+        );
+    }
+
+    public function faild($errors,$message,$code)
     {
         return $this->apiFormat(
             ['errors' => $errors],
+            $message,$code
+        );
+    }
+
+    public function created($data,$message = 'created successfully')
+    {
+        return $this->success(
+            $data,
             $message,
-            Response::HTTP_BAD_REQUEST
+            Response::HTTP_CREATED
+        );
+    }
+
+    public function updated($data,$message = 'updated successfully')
+    {
+        return $this->success(
+            $data, 
+            $message
+        );
+    }
+
+
+    public function validationError($errors,$message = 'validation error')
+    {
+        return $this->faild(
+            $errors, 
+            $message,
+            Response::HTTP_UNPROCESSABLE_ENTITY
         );
     }
 
     public function unAuthrized($message = 'you are unauthrized',$code = Response::HTTP_UNAUTHORIZED) 
     {
-        return $this->message(
-            $message,
-            $code
-        );
+        return $this->message($message,$code);
     }
 
 }
