@@ -5,6 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 /**
+ * 
+ * @OA\Server(
+ *     url="http://ciefmate-production.up.railway.app",
+ *     description="HTTP Server"
+ * )
+ * @OA\Server(
+ *     url="https://ciefmate-production.up.railway.app",
+ *     description="HTTPS Server"
+ * )
+ * 
  * @OA\SecurityScheme(
  *     securityScheme="Bearer",
  *     type="http",
@@ -28,7 +38,7 @@ use Illuminate\Http\Request;
  *     )
  * )
  * 
- *  * @OA\Schema(
+ * @OA\Schema(
  *     schema="User",
  *     type="object",
  *     @OA\Property(property="id", type="integer", example=1),

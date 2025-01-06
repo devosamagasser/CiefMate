@@ -13,6 +13,16 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://ciefmate-production.up.railway.app",
+            "description": "HTTP Server"
+        },
+        {
+            "url": "https://ciefmate-production.up.railway.app",
+            "description": "HTTPS Server"
+        }
+    ],
     "paths": {
         "/api/auth/login": {
             "post": {
