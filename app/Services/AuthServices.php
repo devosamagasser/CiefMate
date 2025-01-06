@@ -2,14 +2,31 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Facades\ApiResponse;
 use App\Facades\FileHandeler;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
 
 class AuthServices 
 {
+
+
+
+    public function handleSocialLogin($user,$provider)
+    {
+        $user = User::where('provider_id',$user->id)->first();
+        if ($user) {
+            $token = $this->generateToken($user);
+            return $this->respondWithToken($user,$token);
+        }
+
+        $userData = $this->prepareUserData($user,$provider);
+        $user = User::create($userData);
+        $token = $this->generateToken($user);
+        return $this->respondWithToken($user,$token);
+    }
 
     /**
      * Get the token array structure.

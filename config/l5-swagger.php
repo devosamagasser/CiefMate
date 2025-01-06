@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Chief-Mate',
+                'title' => env('APP_NAME'),
             ],
 
             'routes' => [
@@ -270,11 +270,13 @@ return [
         'validator_url' => null,
 
         /*
-         * Swagger UI configuration parameters
-         */
+        * Swagger UI configuration parameters
+        */
         'ui' => [
             'display' => [
                 'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
+                
+                'operations_sort' => env('L5_SWAGGER_OPERATIONS_SORT', null), 
                 /*
                  * Controls the default expansion setting for the operations and tags. It can be :
                  * 'list' (expands only the tags),
