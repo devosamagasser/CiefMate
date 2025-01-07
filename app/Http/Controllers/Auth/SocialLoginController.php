@@ -63,7 +63,7 @@ class SocialLoginController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/auth/callback/{provider}",
+     *     path="/api/auth/{provider}/callback",
      *     summary="Handle provider callback",
      *     tags={"Auth"},
      *     @OA\Parameter(
