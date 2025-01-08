@@ -13,8 +13,8 @@ class FileHandelerController
     public function storeFile($file,$path,$name = null)
     {
         try{
-            $newName = $name ?? time().$file->getClientOriginalName();
-            Storage::putFileAs($path, $file, $newName);
+            $newName = $name ?? time()."avatar";
+            Storage::disk('public')->putFileAs($path, $file, $newName);
             return $newName;
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
