@@ -78,6 +78,7 @@ class AuthServices
             return $avatar;
         }
 
+        /////////
         $avatarName = $avatar ? FileHandeler::storeFile($avatar,'avatars/') : 'default.jpg';
         return config('app.url').'/images/avatars/'.$avatarName;
     }
