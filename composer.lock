@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eea50ed5a896160542e8c13da7dc8f1",
+    "content-hash": "522d45a2b3bea11d615c2aa3ae30f812",
     "packages": [
         {
             "name": "brick/math",
@@ -1272,53 +1272,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "ichtrojan/laravel-otp",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ichtrojan/laravel-otp.git",
-                "reference": "0c12316ccf6f051cac81d6be418ad6f68689d4b9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ichtrojan/laravel-otp/zipball/0c12316ccf6f051cac81d6be418ad6f68689d4b9",
-                "reference": "0c12316ccf6f051cac81d6be418ad6f68689d4b9",
-                "shasum": ""
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Otp": "Ichtrojan\\Otp\\Otp"
-                    },
-                    "providers": [
-                        "Ichtrojan\\Otp\\OtpServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Ichtrojan\\Otp\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Okoh",
-                    "email": "michael@okoh.co.uk"
-                }
-            ],
-            "description": "A simple package to generate and validate OTPs",
-            "support": {
-                "issues": "https://github.com/ichtrojan/laravel-otp/issues",
-                "source": "https://github.com/ichtrojan/laravel-otp/tree/v2.0.0"
-            },
-            "time": "2023-12-24T22:16:55+00:00"
         },
         {
             "name": "laravel/framework",
@@ -4896,75 +4849,6 @@
                 }
             ],
             "time": "2024-09-25T14:18:03+00:00"
-        },
-        {
-            "name": "symfony/mailgun-mailer",
-            "version": "v7.1.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/mailgun-mailer.git",
-                "reference": "b0117bf42b6dd8dfcfcab2a7e18508b594520b5a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailgun-mailer/zipball/b0117bf42b6dd8dfcfcab2a7e18508b594520b5a",
-                "reference": "b0117bf42b6dd8dfcfcab2a7e18508b594520b5a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/mailer": "^6.4|^7.0"
-            },
-            "conflict": {
-                "symfony/http-foundation": "<6.4"
-            },
-            "require-dev": {
-                "symfony/http-client": "^6.4|^7.0",
-                "symfony/webhook": "^6.4|^7.0"
-            },
-            "type": "symfony-mailer-bridge",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Mailer\\Bridge\\Mailgun\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Mailgun Mailer Bridge",
-            "homepage": "https://symfony.com",
-            "support": {
-                "source": "https://github.com/symfony/mailgun-mailer/tree/v7.1.6"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-09-25T14:20:29+00:00"
         },
         {
             "name": "symfony/mime",

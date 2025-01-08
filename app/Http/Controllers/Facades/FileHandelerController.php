@@ -10,11 +10,15 @@ class FileHandelerController
      * @param $file
      * @return string
      */
-    public function storeFile($file,$path)
+    public function storeFile($file,$path,$name = null)
     {
-        $name = time().$file->getClientOriginalName();
-        Storage::putFileAs($path, $file, $name);
-        return $name;
+        try{
+            $newName = $name ?? time().$file->getClientOriginalName();
+            Storage::putFileAs($path, $file, $newName);
+            return $newName;
+        } catch (\Exception $e) {
+            return throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -24,8 +28,12 @@ class FileHandelerController
      */
     public function updateFile($file,string $oldname,$path,$name)
     {
-        $this->deleteFile($oldname);
-        return $this->storeFile($file,$path,$name);
+        try{
+            $this->deleteFile($oldname);
+            return $this->storeFile($file,$path,$name);
+        } catch (\Exception $e) {
+            return throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -34,7 +42,11 @@ class FileHandelerController
      */
     public function deleteFile(string $name)
     {
-        Storage::delete($name);
+        try {
+            return Storage::delete($name);
+        } catch (\Exception $e) {
+            return throw new \Exception($e->getMessage());
+        }
     }
 
 
