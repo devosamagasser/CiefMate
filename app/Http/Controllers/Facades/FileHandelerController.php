@@ -14,7 +14,7 @@ class FileHandelerController
     {
         try{
             $newName = $name ?? time()."avatar.jpg";
-            Storage::disk('public')->putFileAs($path, $file, $newName);
+            $path = Storage::disk('public')->putFileAs($path, $file, $newName);
             return $newName;
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
