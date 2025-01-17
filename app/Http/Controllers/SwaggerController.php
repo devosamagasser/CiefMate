@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 /**
  * 
  * @OA\Server(
- *     url="http://ciefmate-production.up.railway",
+ *     url="http://ciefmate-production.up.railway.app",
  *     description="HTTP Server"
  * )
  * @OA\Server(
- *     url="https://ciefmate-production.up.railway",
+ *     url="https://ciefmate-production.up.railway.app",
  *     description="HTTPS Server"
  * )
  * 
