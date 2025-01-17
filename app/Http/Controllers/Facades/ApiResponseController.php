@@ -45,6 +45,30 @@ class ApiResponseController extends Controller
         );
     }
 
+
+    public function validationError($errors,$message = 'validation error')
+    {
+        return $this->faild(
+            $errors, 
+            $message,
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        );
+    }
+
+    public function unAuthrized($message = 'you are unauthrized',$code = Response::HTTP_UNAUTHORIZED) 
+    {
+        return $this->message($message,$code);
+    }
+
+
+    public function faild($errors,$message,$code)
+    {
+        return $this->apiFormat(
+            ['errors' => $errors],
+            $message,$code
+        );
+    }
+
     public function success($data,$message = null,$code = Response::HTTP_OK)
     {
         return $this->apiFormat(
@@ -62,13 +86,6 @@ class ApiResponseController extends Controller
         );
     }
 
-    public function faild($errors,$message,$code)
-    {
-        return $this->apiFormat(
-            ['errors' => $errors],
-            $message,$code
-        );
-    }
 
     public function created($data,$message = 'created successfully')
     {
@@ -87,19 +104,5 @@ class ApiResponseController extends Controller
         );
     }
 
-
-    public function validationError($errors,$message = 'validation error')
-    {
-        return $this->faild(
-            $errors, 
-            $message,
-            Response::HTTP_UNPROCESSABLE_ENTITY
-        );
-    }
-
-    public function unAuthrized($message = 'you are unauthrized',$code = Response::HTTP_UNAUTHORIZED) 
-    {
-        return $this->message($message,$code);
-    }
 
 }

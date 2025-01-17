@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 /**
  * 
  * @OA\Server(
- *     url="http://ciefmate-production.up.railway.app",
+ *     url="http://127.0.0.1:8000",
  *     description="HTTP Server"
  * )
  * @OA\Server(
- *     url="https://ciefmate-production.up.railway.app",
+ *     url="http://127.0.0.1:8000",
  *     description="HTTPS Server"
  * )
  * 
@@ -44,10 +44,19 @@ use Illuminate\Http\Request;
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="John Doe"),
  *     @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+ *     @OA\Property(property="phone", type="string", example="099 2899 634 34"),
  *     @OA\Property(property="avatar", type="string", example="avatars/avatar.jpg"),
- *     @OA\Property(property="created_at", type="string", format="date-time"),
- *     @OA\Property(property="updated_at", type="string", format="date-time")
  * )
+ * 
+ * @OA\Schema(
+ *     schema="Workspace",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Workspace name"),
+ *     @OA\Property(property="color", type="string", example="blue"),
+ *     @OA\Property(property="color_code", type="string", example="#0000FF"),
+ * )
+ * 
  */
 class SwaggerController extends Controller
 {

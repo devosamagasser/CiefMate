@@ -20,6 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'provider',
+        'provider_id',
         'password',
         'avatar'
     ];
@@ -44,5 +47,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function workspaces()
+    {
+        return $this->hasMany(Workspace::class);
+    }
 
 }

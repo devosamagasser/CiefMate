@@ -10,12 +10,12 @@ class FileHandelerController
      * @param $file
      * @return string
      */
-    public function storeFile($file,$path,$name = null)
+    public function storeFile($file,$path, $extension = null, $name = null)
     {
         try{
-            $newName = $name ?? time()."avatar.jpg";
+            $newName = ($name ?? time()).".$extension";
             $path = Storage::putFileAs($path, $file, $newName);
-            return $newName;
+            return $path;
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
         }
@@ -26,11 +26,11 @@ class FileHandelerController
      * @param string $oldname
      * @return string
      */
-    public function updateFile($file,string $oldname,$path,$name)
+    public function updateFile($file,string $oldname,$path, $extension = null, $name = null)
     {
         try{
             $this->deleteFile($oldname);
-            return $this->storeFile($file,$path,$name);
+            return $this->storeFile($file,$path,$extension, $name);
         } catch (\Exception $e) {
             return throw new \Exception($e->getMessage());
         }

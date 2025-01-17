@@ -11,6 +11,7 @@ use App\Services\AuthServices;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResources;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -96,18 +97,19 @@ class AuthController extends Controller
             $credentials = $request->only(['email','password']);
             
             if (! $user = $this->checkUser($credentials)) {
-                return ApiResponse::message('Your credentials doesn\'t match our records',Response::HTTP_UNAUTHORIZED);            
+                
+                return ApiResponse::unAuthrized('Your credentials doesn\'t match our records');            
             }
 
             $token = $this->authServices->generateToken($user);
             
-            return $this->authServices->respondWithToken($user,$token);
+            return $this->authServices->respondWithToken(new UserResources($user),$token);
             
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('User not found');            
             
         }  catch (\Exception $e) {
-            return ApiResponse::serverError();            
+            return ApiResponse::serverError();          
         }
     }
     
@@ -122,9 +124,10 @@ class AuthController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"name", "email", "password", "avatar"},
+     *                 required={"name", "email", "phone", "password", "avatar"},
      *                 @OA\Property(property="name", type="string", example="John Doe"),
      *                 @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *                 @OA\Property(property="phone", type="string", example="0199021098"),
      *                 @OA\Property(property="password", type="string", format="password", example="password"),
      *                 @OA\Property(
      *                     property="avatar",
@@ -171,7 +174,7 @@ class AuthController extends Controller
             
             $user = User::create($userData);
             
-            return ApiResponse::created($user,'User created successfully');
+            return ApiResponse::created(new UserResources($user),'User created successfully');
             
         } catch (\Exception $e) {
             return ApiResponse::serverError($e->getMessage());            

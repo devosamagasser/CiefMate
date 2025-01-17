@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Config;
 class AuthServices 
 {
 
-
-
     public function handleSocialLogin($user,$provider)
     {
-        $user = User::where('provider_id',$user->id)->first();
-        if ($user) {
-            $token = $this->generateToken($user);
-            return $this->respondWithToken($user,$token);
+           
+        $_user = User::where('provider_id',$user->id)->first();
+        if ($_user) {
+            dd($_user);
+            $token = $this->generateToken($_user);
+            return $this->respondWithToken($_user,$token);
         }
-
+        
         $userData = $this->prepareUserData($user,$provider);
         $user = User::create($userData);
         $token = $this->generateToken($user);
@@ -66,6 +66,7 @@ class AuthServices
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($password),
+            'phone' => $request->phone,
             'provider' => $provider,
             'provider_id' => $request->id,
             'avatar' => $avatar
@@ -78,8 +79,7 @@ class AuthServices
             return $avatar;
         }
 
-        /////////
-        $avatarName = $avatar ? FileHandeler::storeFile($avatar,'avatars/') : 'default.jpg';
-        return config('app.url').'/images/avatars/'.$avatarName;
+        $avatarName = $avatar ? FileHandeler::storeFile($avatar,'avatars','jpg') : 'avatars/default.jpg';
+        return $avatarName;
     }
 }

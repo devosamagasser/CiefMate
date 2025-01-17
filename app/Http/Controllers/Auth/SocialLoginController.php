@@ -51,7 +51,7 @@ class SocialLoginController extends Controller
     {
         try {
 
-            if (!in_array($provider, config('services.socialite_providers'))) {
+            if (!in_array($provider, config('services.socialite_providers') )) {
                 return $this->providerNotSupported();
             }
             
@@ -112,7 +112,7 @@ class SocialLoginController extends Controller
         } catch (InvalidStateException $e) {
             return ApiResponse::message('Invalid state. Please try again.', Response::HTTP_BAD_REQUEST);
         } catch (\Exception $e) {
-            return ApiResponse::serverError();
+            return ApiResponse::serverError($e->getMessage());
         }
     }
 
