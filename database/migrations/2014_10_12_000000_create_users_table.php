@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('avatar')->default('default.jpg');
-            $table->enum('provider_id',config('services.socialite_providers'))->default('default.jpg');
+            $table->enum('provider',['email','google'])->default('email');
+            $table->string('provider_id');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
