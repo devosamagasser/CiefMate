@@ -97,16 +97,15 @@ class AuthController extends Controller
             $credentials = $request->only(['email','password']);
             
             if (! $user = $this->checkUser($credentials)) {
-                
                 return ApiResponse::unAuthrized('Your credentials doesn\'t match our records');            
             }
-
+            
             $token = $this->authServices->generateToken($user);
             
             return $this->authServices->respondWithToken(new UserResources($user),$token);
             
         } catch (ModelNotFoundException $e) {
-            return ApiResponse::notFound('User not found');            
+            return ApiResponse::unAuthrized('Your credentials doesn\'t match our records');            
             
         }  catch (\Exception $e) {
             return ApiResponse::serverError();          

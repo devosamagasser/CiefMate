@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone')->unique()->nullable();
             $table->string('avatar')->default('default.jpg');
             $table->enum('provider',['email','google'])->default('email');
-            $table->string('provider_id');
+            $table->string('provider_id')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
