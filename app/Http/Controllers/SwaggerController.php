@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 /**
  * 
  * @OA\Server(
- *     url="http://ciefmate-production.up.railway.app",
+ *     url="http://127.0.0.1:8000",
  *     description="HTTP Server"
  * )
  * @OA\Server(
@@ -55,6 +55,30 @@ use Illuminate\Http\Request;
  *     @OA\Property(property="name", type="string", example="Workspace name"),
  *     @OA\Property(property="color", type="string", example="blue"),
  *     @OA\Property(property="color_code", type="string", example="#0000FF"),
+ * )
+ * 
+ * @OA\Schema(
+ *     schema="Categories",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="title", type="string", example="category title"),
+ *     @OA\Property(property="worksapce_id", type="integer", example="2"),
+ * )
+ * 
+ * @OA\Schema(
+ *     schema="Sections",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="title", type="string", example="section title"),
+ *     @OA\Property(property="worksapce_id", type="integer", example="2"),
+ * )
+ * 
+ * @OA\Schema(
+ *     schema="Warehouse",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="title", type="string", example="section title"),
+ *     @OA\Property(property="type", type="integer", example="equipment || ingredient"),
  * )
  * 
  */

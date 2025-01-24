@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();
-            $table->string('name');
             $table->enum('type', ['ingredient', 'equipment']);
             $table->timestamps();
         });

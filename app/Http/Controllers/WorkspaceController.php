@@ -19,6 +19,10 @@ use Illuminate\Http\Response;
  */
 class WorkspaceController extends Controller
 {
+
+
+    
+    
     /**
      * @OA\Get(
      *     path="/api/workspaces",
@@ -47,11 +51,10 @@ class WorkspaceController extends Controller
      *     )
      * )
      */
-    public function index(Request $request)
+    public function index()
     {
         try {
-            $workspace = Workspace::userWorkspaces()->get();
-            $workspaces = $request->user()->workspaces;
+            $workspaces = Workspace::userWorkspaces()->get();
             return ApiResponse::success(WorkspacesResource::collection($workspaces));
         } catch (\Exception $e) {
             return ApiResponse::serverError();
