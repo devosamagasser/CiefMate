@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 /**
  * 
  * @OA\Server(
- *     url="http://127.0.0.1:8000",
- *     description="HTTP Server"
- * )
- * @OA\Server(
  *     url="https://ciefmate-production.up.railway.app",
  *     description="HTTPS Server"
+ * )
+ * 
+ * @OA\Server(
+ *     url="http://127.0.0.1:8000",
+ *     description="HTTP Server"
  * )
  * 
  * @OA\SecurityScheme(
