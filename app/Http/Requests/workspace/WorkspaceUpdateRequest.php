@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\workspace;
 
+use App\Rules\UniqueWorkSpaceNameRule;
 use App\Http\Requests\AbstractApiRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -32,7 +33,7 @@ class WorkspaceUpdateRequest extends AbstractApiRequest
     {
         $id = request('workspace');
         return [
-            'name' => 'string|unique:workspaces,name,'.$id,
+            'name' => ['string',new UniqueWorkSpaceNameRule($id)],
             'color' => 'string|exists:colors,id'
         ];
     }

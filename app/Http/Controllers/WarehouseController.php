@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Warehouse;
 use App\Facades\ApiResponse;
+use App\Http\Controllers\Traits\ControllerTraits;
 use App\Http\Requests\Warehouse\WarehouseStoreRequest;
 use App\Http\Requests\Warehouse\WarehouseUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WarehouseController extends Controller
 {
+
+    use ControllerTraits;
+
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/warehouse/{type}",
+     *     path="/api/workspaces/{id}/warehouse",
      *     summary="Get a warehouse details of workspace by ID of workspace",
      *     tags={"Warehouse"},
      *     security={{"Bearer":{}}},
@@ -26,7 +30,7 @@ class WarehouseController extends Controller
      *     @OA\Parameter(
      *         name="type",
      *         in="path",
-     *         required=true,
+     *         required=false,
      *         description="equipment || ingredient",
      *         @OA\Schema(type="string")
      *     ),
@@ -52,9 +56,10 @@ class WarehouseController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id,$type)
+    public function index($workspace_id)
     {
         try {
+            $type = request()->type ?? null;
             $warehoouse = Warehouse::userWorkspace()
                             ->where('workspace_id',$workspace_id)
                             ->where('type',$type)

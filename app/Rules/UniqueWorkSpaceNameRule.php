@@ -6,9 +6,17 @@ use App\Models\Workspace;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class ExistsWorkSpaceRole implements ValidationRule
+class UniqueWorkSpaceNameRule implements ValidationRule
 {
 
+    use Traits\UniqueNameRulesTrait;
+
+    public $id;
+    
+    public function __construct($id = null)
+    {
+        $this->id = $id;
+    }
     /**
      * Run the validation rule.
      *
@@ -16,10 +24,9 @@ class ExistsWorkSpaceRole implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $validation = Workspace::userWorkspaces()->where('id', $value)->exists();
-        if (!$validation) {
-            $fail("The selected workspace is invalid.");
+        $validation = $this->rule(Workspace::class, $value, $this->id);
+        if ($validation) {
+            $fail("The workspace is already exists.");
         }
-            
     }
 }

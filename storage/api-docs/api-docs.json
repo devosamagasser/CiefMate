@@ -15,12 +15,12 @@
     },
     "servers": [
         {
-            "url": "http://127.0.0.1:8000",
-            "description": "HTTP Server"
-        },
-        {
             "url": "https://ciefmate-production.up.railway.app",
             "description": "HTTPS Server"
+        },
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "HTTP Server"
         }
     ],
     "paths": {
@@ -773,7 +773,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/"
+                                "$ref": "#/components/schemas/CategoryUpdateRequest"
                             }
                         }
                     }
@@ -892,6 +892,878 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Category not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/workspaces/{id}/equipments": {
+            "get": {
+                "tags": [
+                    "Equipments"
+                ],
+                "summary": "Get a equipments of workspace by ID of workspace",
+                "operationId": "5228ab274cee2a927634dafcd895c03a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the workspace",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "type of equipments",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of equipments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Equipments"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/equipments": {
+            "post": {
+                "tags": [
+                    "Equipments"
+                ],
+                "summary": "Create a new equipment",
+                "operationId": "c95b6d6ae06e995728be5a7e10fcbcc8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Equipment created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Equipment created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Equipments"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation Error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "The name field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/equipment/{id}": {
+            "get": {
+                "tags": [
+                    "Equipments"
+                ],
+                "summary": "Get a equipment by ID",
+                "operationId": "546d2e88aec2a0d7af708399e7e20a1e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the equipment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "equipment retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Equipments"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Equipment not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Equipment not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Equipments"
+                ],
+                "summary": "Update a equipment",
+                "operationId": "eeb16faf22a74b63460867278b61644e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the equipment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EquipmentUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Equipment updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Equipments"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Equipment not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Equipment not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Equipments"
+                ],
+                "summary": "Delete a equipment",
+                "operationId": "9337ff7b74f071a99d2d2ea81f4617e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the equipment",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "equipment deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "equipment deleted successfully"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "equipment not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "equipment not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/workspaces/{id}/ingredients": {
+            "get": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Get a ingredients of workspace by ID of workspace",
+                "operationId": "ebff0958aeb34db9c08f4cf83ac49732",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the workspace",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "type of ingredients",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of ingredients retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Ingredients"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/ingredient": {
+            "post": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Create a new ingredient",
+                "operationId": "476637962be203faad6157d2e647b11c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ingredient created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ingredient created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ingredients"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation Error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "The name field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/ingredient/{id}": {
+            "get": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Get a ingredient by ID",
+                "operationId": "36949c8b328b77e4f078d94adf8a4fbf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ingredient",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ingredient retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ingredients"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ingredient not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ingredient not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Update a ingredient",
+                "operationId": "9a70fcc89dfcec2891cab9fb332bb45a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ingredient",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IngredientUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "ingredient updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Ingredients"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ingredient not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ingredient not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Ingredients"
+                ],
+                "summary": "Delete a ingredient",
+                "operationId": "c5e528bf82ec689623e007296a564380",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the ingredient",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ingredient deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ingredient deleted successfully"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "ingredient not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "ingredient not found"
                                         },
                                         "code": {
                                             "type": "integer",
@@ -1684,7 +2556,7 @@
                         "name": "type",
                         "in": "path",
                         "description": "equipment || ingredient",
-                        "required": true,
+                        "required": false,
                         "schema": {
                             "type": "string"
                         }
@@ -2530,6 +3402,64 @@
                 },
                 "type": "object"
             },
+            "Ingredients": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "ingriedent name"
+                    },
+                    "cover": {
+                        "type": "sting",
+                        "example": "cover.jpg"
+                    },
+                    "description": {
+                        "type": "sting",
+                        "example": "some description to descripe ingredient"
+                    },
+                    "unit": {
+                        "type": "sting",
+                        "example": "ml || l || gm || kg || unit"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "12.5 || 11"
+                    }
+                },
+                "type": "object"
+            },
+            "Equipments": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "ingriedent name"
+                    },
+                    "cover": {
+                        "type": "sting",
+                        "example": "cover.jpg"
+                    },
+                    "description": {
+                        "type": "sting",
+                        "example": "some description to descripe equipment"
+                    },
+                    "unit": {
+                        "type": "sting",
+                        "example": "unit"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "11"
+                    }
+                },
+                "type": "object"
+            },
             "CategoryStoreRequest": {
                 "required": [
                     "title",
@@ -2554,9 +3484,157 @@
                     "workspace_id"
                 ],
                 "properties": {
-                    "name": {
+                    "title": {
                         "type": "string",
                         "example": "Category #"
+                    },
+                    "workspace_id": {
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "EquipmentStoreRequest": {
+                "required": [
+                    "name",
+                    "unit",
+                    "quantity",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "dish"
+                    },
+                    "cover": {
+                        "type": "binary",
+                        "example": "image.jpg"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "some decription"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "unit"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "11"
+                    },
+                    "warehouse_id": {
+                        "description": "ID of the warehouse",
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "string",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "EquipmentUpdateRequest": {
+                "required": [
+                    "name",
+                    "unit",
+                    "quantity",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "dish 2"
+                    },
+                    "cover": {
+                        "type": "binary",
+                        "example": "image.jpg"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "some decription"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "unit"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "11"
+                    }
+                },
+                "type": "object"
+            },
+            "IngredientStoreRequest": {
+                "required": [
+                    "name",
+                    "unit",
+                    "quantity",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "shugar"
+                    },
+                    "cover": {
+                        "type": "binary",
+                        "example": "image.jpg"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "some decription"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "l, ml, g, unit, kg"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "11, 12, 13"
+                    },
+                    "warehouse_id": {
+                        "description": "ID of the warehouse",
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "string",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "IngredientUpdateRequest": {
+                "required": [
+                    "name",
+                    "unit",
+                    "quantity",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "shugar"
+                    },
+                    "cover": {
+                        "type": "binary",
+                        "example": "image.jpg"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "some decription"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "l, ml, g, unit, kg"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": "11, 12, 13"
                     }
                 },
                 "type": "object"
@@ -2581,12 +3659,18 @@
             },
             "SectionUpdateRequest": {
                 "required": [
-                    "title"
+                    "title",
+                    "workspace_id"
                 ],
                 "properties": {
                     "title": {
                         "type": "string",
                         "example": "section 1"
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "string",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -2594,7 +3678,7 @@
             "WarehouseStoreRequest": {
                 "required": [
                     "title",
-                    "title",
+                    "type",
                     "workspace_id"
                 ],
                 "properties": {
@@ -2617,12 +3701,18 @@
             },
             "WarehouseUpdateRequest": {
                 "required": [
-                    "title"
+                    "title",
+                    "workspace_id"
                 ],
                 "properties": {
                     "title": {
                         "type": "string",
                         "example": "flavors"
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "string",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -2686,6 +3776,14 @@
         {
             "name": "Categories",
             "description": "Categories"
+        },
+        {
+            "name": "Equipments",
+            "description": "Equipments"
+        },
+        {
+            "name": "Ingredients",
+            "description": "Ingredients"
         },
         {
             "name": "Sections",

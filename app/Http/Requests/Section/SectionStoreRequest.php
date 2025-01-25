@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Section;
 
+use App\Models\Section;
 use App\Rules\UniqueTitleRole;
 use App\Rules\ExistsWorkSpaceRole;
+use App\Rules\UniqueSectionTitleRule;
 use App\Http\Requests\AbstractApiRequest;
-use App\Models\Section;
 
 
 /**
@@ -34,8 +35,9 @@ class SectionStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
+        $workspace_id = request()->workspace_id; 
         return [
-            'title' => ['required', 'string', 'max:255', new UniqueTitleRole(Section::class)],
+            'title' => ['required', 'string', 'max:255', new UniqueSectionTitleRule($workspace_id)],
             'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRole()],
         ];
     }

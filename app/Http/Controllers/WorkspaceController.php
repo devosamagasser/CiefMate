@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Workspace;
 use App\Facades\ApiResponse;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Traits\ControllerTraits;
 use App\Http\Resources\WorkspacesResource;
 use App\Http\Requests\workspace\WorkspaceStoreRequest;
 use App\Http\Requests\workspace\WorkspaceUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Response;
 
 /**
  * @OA\Tag(
@@ -19,10 +18,7 @@ use Illuminate\Http\Response;
  */
 class WorkspaceController extends Controller
 {
-
-
-    
-    
+    use ControllerTraits;    
     /**
      * @OA\Get(
      *     path="/api/workspaces",
@@ -231,7 +227,7 @@ class WorkspaceController extends Controller
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('Workspace not found');
         } catch (\Exception $e) {
-            return ApiResponse::serverError();
+            return ApiResponse::serverError($e->getMessage());
         }
     }
 

@@ -23,7 +23,8 @@ class RegisterRequest extends AbstractApiRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|unique:users,phone',
             'password' => 'required|string',
             'avatar' => 'image|mimes:jpeg,png,jpg|max:2048'
         ];

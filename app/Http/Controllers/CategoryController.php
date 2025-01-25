@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Facades\ApiResponse;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Traits\ControllerTraits;
 use App\Http\Requests\Category\CategoryStoreRequest;
 use App\Http\Requests\Category\CategoryUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CategoryController extends Controller
 {
+    use ControllerTraits;
     /**
      * @OA\Get(
      *     path="/api/workspaces/{id}/categories",
@@ -180,7 +181,7 @@ class CategoryController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/")
+     *         @OA\JsonContent(ref="#/components/schemas/CategoryUpdateRequest")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -216,7 +217,7 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::userWorkspace()->where('id', $id)->firstOrFail();
-            $data = $this->updatedDataFormated($request);
+            $data = $this->updatedDataFormated($request,$request->except('workspace_id'));
             $category->fill($data);
             if($category->isDirty()){
                 $category->save();

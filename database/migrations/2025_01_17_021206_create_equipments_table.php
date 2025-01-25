@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('cover');
+            $table->string('cover')->defailt('equipments\default.jpg');
             $table->text('description');
             $table->string('quantity');
-            $table->foreignId('warehous_id')->constrained('warehouses')->cascadeOnDelete();
+            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->cascadeOnDelete();
+            $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();            
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ use Illuminate\Http\Response;
  */
 class UsersController extends Controller
 {
+    use Traits\ControllerTraits;
     /**
      * @OA\Get(
      *     path="/api/user/profile",
@@ -134,11 +135,8 @@ class UsersController extends Controller
     {
         try {
             $user = $request->user();
+            $data = $this->updateWithFile('avatar', $request, $user, 'avatars');
 
-            $data = ($request->has('avatar')) ?
-                    $this->updateWithAvatar($user, $request)
-                  : $this->updatedDataFormated($request);
-        
             $user->fill($data);
             if($user->isDirty()){
                 $user->save();

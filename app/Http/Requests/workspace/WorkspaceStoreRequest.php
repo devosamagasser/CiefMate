@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\workspace;
 
+use App\Rules\UniqueWorkSpaceNameRule;
 use App\Http\Requests\AbstractApiRequest;
 
 /**
@@ -31,7 +32,7 @@ class WorkspaceStoreRequest extends AbstractApiRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|unique:workspaces,name',
+            'name' => ['string',new UniqueWorkSpaceNameRule()],
             'color' => 'string|exists:colors,id'
         ];
     }

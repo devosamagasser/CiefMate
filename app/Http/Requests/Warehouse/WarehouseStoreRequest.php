@@ -2,16 +2,17 @@
 
 namespace App\Http\Requests\Warehouse;
 
+use App\Models\Warehouse;
 use App\Rules\UniqueTitleRole;
 use App\Rules\ExistsWorkSpaceRole;
+use App\Rules\UniqueWarehouseTitleRule;
 use App\Http\Requests\AbstractApiRequest;
-use App\Models\Warehouse;
 
 /**
  * @OA\Schema(
  *     schema="WarehouseStoreRequest",
  *     type="object",
- *     required={"title", "title", "workspace_id"},
+ *     required={"title", "type", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="flavours"),
  *     @OA\Property(property="type", type="string", example="equipment || ingredient", description="type of Inventory"),
  *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
@@ -34,8 +35,9 @@ class WarehouseStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
+        $workspace = request()->workspace_id;
         return [
-            'title' => ['required', 'string', 'max:255', new UniqueTitleRole(Warehouse::class)],
+            'title' => ['required', 'string', 'max:255', new UniqueWarehouseTitleRule($workspace)],
             'type' => ['required', 'string', 'in:equipment,ingredient'],
             'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRole()],
         ];

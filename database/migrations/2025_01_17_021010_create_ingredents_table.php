@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('ingredents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('cover');
+            $table->string('cover')->default('ingredients\default.jpg');
             $table->text('description');
             $table->string('unit');
             $table->string('quantity');
-            $table->foreignId('warehous_id')->constrained('warehouses')->cascadeOnDelete();
+            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->cascadeOnDelete();
+            $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();
             $table->timestamps();
         });
     }

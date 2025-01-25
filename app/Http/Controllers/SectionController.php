@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Section;
 use App\Facades\ApiResponse;
+use App\Http\Controllers\Traits\ControllerTraits;
 use App\Http\Requests\Section\SectionStoreRequest;
 use App\Http\Requests\Section\SectionUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SectionController extends Controller
 {
+    use ControllerTraits;
     /**
      * @OA\Get(
      *     path="/api/workspaces/{id}/sections",

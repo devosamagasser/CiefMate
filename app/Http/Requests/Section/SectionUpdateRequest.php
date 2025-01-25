@@ -2,16 +2,18 @@
 
 namespace App\Http\Requests\Section;
 
-use App\Http\Requests\AbstractApiRequest;
 use App\Models\Section;
-use App\Rules\UniqueTitleRole;
+use App\Rules\BelongsToWorkSpaceRule;
+use App\Rules\UniqueSectionTitleRule;
+use App\Http\Requests\AbstractApiRequest;
 
 /**
  * @OA\Schema(
  *     schema="SectionUpdateRequest",
  *     type="object",
- *     required={"title"},
+ *     required={"title", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="section 1"),
+ *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
  * )
  */
 class SectionUpdateRequest extends AbstractApiRequest
@@ -32,8 +34,10 @@ class SectionUpdateRequest extends AbstractApiRequest
     public function rules(): array
     {
         $id = request()->section;
+        $workspace_id = request()->workspace_id; 
         return [
-            'title' => ['required', 'string', 'max:255', new UniqueTitleRole(Section::class,$id)],
+            'title' => ['required', 'string', 'max:255', new UniqueSectionTitleRule($workspace_id, $id)],
+            'workspace_id' => ['required', 'integer', new BelongsToWorkSpaceRule(Section::class, $workspace_id, $id)],
         ];
     }
 }

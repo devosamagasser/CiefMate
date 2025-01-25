@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Category;
 
 use App\Models\Category;
-use App\Rules\UniqueTitleRole;
+use App\Rules\UniqueCategoryTitleRule;
 use App\Rules\ExistsWorkSpaceRole;
 use App\Http\Requests\AbstractApiRequest;
 
@@ -33,8 +33,9 @@ class CategoryStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
+        $workspace_id = request()->workspace_id; 
         return [
-            'title' => ['required', 'string', 'max:255', new UniqueTitleRole(Category::class)],
+            'title' => ['required', 'string', 'max:255', new UniqueCategoryTitleRule($workspace_id)],
             'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRole()],
         ];
     }

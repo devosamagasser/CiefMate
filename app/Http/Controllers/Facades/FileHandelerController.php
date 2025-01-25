@@ -10,7 +10,7 @@ class FileHandelerController
      * @param $file
      * @return string
      */
-    public function storeFile($file,$path, $extension = null, $name = null)
+    public function storeFile($file, $path, $extension, $name = null)
     {
         try{
             $newName = ($name ?? time()).".$extension";
@@ -26,7 +26,7 @@ class FileHandelerController
      * @param string $oldname
      * @return string
      */
-    public function updateFile($file,string $oldname,$path, $extension = null, $name = null)
+    public function updateFile($file,string $oldname,$path, $extension, $name = null)
     {
         try{
             $this->deleteFile($oldname);
