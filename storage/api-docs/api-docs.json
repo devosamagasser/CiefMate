@@ -30,7 +30,7 @@
                     "Auth"
                 ],
                 "summary": "User login",
-                "operationId": "535ffeda4b78916efd658b2844ea897a",
+                "operationId": "47eabf0df06a12d888949a765ad37d03",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -171,7 +171,7 @@
                     "Auth"
                 ],
                 "summary": "User registration",
-                "operationId": "da8643013c2941f5ed7f8a9c9b4a7f7a",
+                "operationId": "e6e6fa9f24be2e077081049aec37766e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -296,7 +296,7 @@
                     "Auth"
                 ],
                 "summary": "User logout",
-                "operationId": "58244835d176f8b795cd9cc61c816b00",
+                "operationId": "a39e2ab9087fa38fce8e291e0b417286",
                 "responses": {
                     "200": {
                         "description": "Logout successful",
@@ -366,13 +366,161 @@
                 ]
             }
         },
+        "/api/otp-verification": {
+            "post": {
+                "tags": [
+                    "Email Verification"
+                ],
+                "summary": "Verify OTP for email verification",
+                "operationId": "a485a678b6f5a00b47e208ef7e9573bf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmailVerificationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP verified successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verified successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "string",
+                                            "example": "This code is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/resend-otp": {
+            "post": {
+                "tags": [
+                    "Email Verification"
+                ],
+                "summary": "Resend OTP for email verification",
+                "operationId": "c800ec910a7f4c68d45a65accdf3a115",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OTP re-sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "OTP re-sent successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email already verified."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/{provider}/redirect": {
             "get": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Redirect to provider for social login",
-                "operationId": "f90fe204c79efd02c1b426b9618063ff",
+                "operationId": "1b8d5b35a2e70ec519f19ef9273ffd3e",
                 "parameters": [
                     {
                         "name": "provider",
@@ -421,7 +569,7 @@
                     "Auth"
                 ],
                 "summary": "Handle provider callback",
-                "operationId": "a9bbea22b5f4369bddac2c09a4ad67f1",
+                "operationId": "7bb032cc8005438d79f4225db04dc265",
                 "parameters": [
                     {
                         "name": "provider",
@@ -510,7 +658,7 @@
                     "Categories"
                 ],
                 "summary": "Get a categories of workspace by ID of workspace",
-                "operationId": "d5fa7beec9feb1d6d714099a12c3a934",
+                "operationId": "7719ede33cf1c759d50efa8e4d748b92",
                 "parameters": [
                     {
                         "name": "id",
@@ -579,7 +727,7 @@
                     "Categories"
                 ],
                 "summary": "Create a new workspace",
-                "operationId": "de40ad04180a48262a05cf249f785ab3",
+                "operationId": "aa8acee8a7e23071b37eec2731ba6bed",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -672,7 +820,7 @@
                     "Categories"
                 ],
                 "summary": "Get a category by ID",
-                "operationId": "25690688339275caf7ded3e8702e7670",
+                "operationId": "a74915bb2b7e75f0d426c907daa3812e",
                 "parameters": [
                     {
                         "name": "id",
@@ -756,7 +904,7 @@
                     "Categories"
                 ],
                 "summary": "Update a category",
-                "operationId": "9be67b4880d28356ade2ebc0b425415e",
+                "operationId": "5b9014e3745b1de11700d1b8385f66ad",
                 "parameters": [
                     {
                         "name": "id",
@@ -850,7 +998,7 @@
                     "Categories"
                 ],
                 "summary": "Delete a category",
-                "operationId": "534a636fb456263f752f0983f8097fb5",
+                "operationId": "b6992c5b4e3280062e2cff7803b13969",
                 "parameters": [
                     {
                         "name": "id",
@@ -937,7 +1085,7 @@
                     "Equipments"
                 ],
                 "summary": "Get a equipments of workspace by ID of workspace",
-                "operationId": "5228ab274cee2a927634dafcd895c03a",
+                "operationId": "b0b3acaa1a616251cd8c72e63047c6d5",
                 "parameters": [
                     {
                         "name": "id",
@@ -1015,7 +1163,7 @@
                     "Equipments"
                 ],
                 "summary": "Create a new equipment",
-                "operationId": "c95b6d6ae06e995728be5a7e10fcbcc8",
+                "operationId": "518061473c0f59ebad6172b1a6ea1b3c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1108,7 +1256,7 @@
                     "Equipments"
                 ],
                 "summary": "Get a equipment by ID",
-                "operationId": "546d2e88aec2a0d7af708399e7e20a1e",
+                "operationId": "66416138f762d92a37eb177529c8410e",
                 "parameters": [
                     {
                         "name": "id",
@@ -1192,7 +1340,7 @@
                     "Equipments"
                 ],
                 "summary": "Update a equipment",
-                "operationId": "eeb16faf22a74b63460867278b61644e",
+                "operationId": "cd450f26bdb5f24060dedcfb2a62d2a8",
                 "parameters": [
                     {
                         "name": "id",
@@ -1286,7 +1434,7 @@
                     "Equipments"
                 ],
                 "summary": "Delete a equipment",
-                "operationId": "9337ff7b74f071a99d2d2ea81f4617e4",
+                "operationId": "7fc5dd6df86e5003b1ad8407b6c52fd4",
                 "parameters": [
                     {
                         "name": "id",
@@ -1373,7 +1521,7 @@
                     "Ingredients"
                 ],
                 "summary": "Get a ingredients of workspace by ID of workspace",
-                "operationId": "ebff0958aeb34db9c08f4cf83ac49732",
+                "operationId": "6b03ba50fd8766cb660fcdd8114476b8",
                 "parameters": [
                     {
                         "name": "id",
@@ -1451,7 +1599,7 @@
                     "Ingredients"
                 ],
                 "summary": "Create a new ingredient",
-                "operationId": "476637962be203faad6157d2e647b11c",
+                "operationId": "ee6b6f4e02bd285b327c44ae7c996d35",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1544,7 +1692,7 @@
                     "Ingredients"
                 ],
                 "summary": "Get a ingredient by ID",
-                "operationId": "36949c8b328b77e4f078d94adf8a4fbf",
+                "operationId": "c756a219bdc40f20221833e4eaa57124",
                 "parameters": [
                     {
                         "name": "id",
@@ -1628,7 +1776,7 @@
                     "Ingredients"
                 ],
                 "summary": "Update a ingredient",
-                "operationId": "9a70fcc89dfcec2891cab9fb332bb45a",
+                "operationId": "103d995b765750825ceb880dbf809c8e",
                 "parameters": [
                     {
                         "name": "id",
@@ -1722,7 +1870,7 @@
                     "Ingredients"
                 ],
                 "summary": "Delete a ingredient",
-                "operationId": "c5e528bf82ec689623e007296a564380",
+                "operationId": "4bad46ccadcaf5aeac5edad2c6718e2e",
                 "parameters": [
                     {
                         "name": "id",
@@ -1803,13 +1951,507 @@
                 ]
             }
         },
+        "/api/invitation": {
+            "post": {
+                "tags": [
+                    "Invitations"
+                ],
+                "summary": "Invite a new workspace",
+                "operationId": "88e2df6346242177bf8731bce4b83c3d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InviteMembersRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Member invited successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The invite has been sent"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 422
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation Error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "The email is not valid."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "451": {
+                        "description": "Unavailable for legal reasons",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 451
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This user isn\\'t free to join your workspace"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/invitation/{id}/accept": {
+            "get": {
+                "tags": [
+                    "Invitations"
+                ],
+                "summary": "Accept Invite",
+                "operationId": "69381e8be6fcf67c0409b426c71216ac",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the invitation",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invitation accepted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invitation accepted, you are now one of the teem"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Invitation not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invitation not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/workspaces/{id}/Members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get all members of workspace by ID of workspace",
+                "operationId": "783c17d4f0373531aa56018915347278",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the workspace",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "section_id",
+                        "in": "path",
+                        "description": "filter members by setcion section",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of members retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/User"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/member/{id}": {
+            "put": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Update a member",
+                "operationId": "385a247a4e722c7398a63f7c994dd972",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the member",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MemberUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Memeber info.. updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Memeber's info.. updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 422
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation Error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "rule": [
+                                                    "The rule is not valid."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Member not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Member not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/member/{id}/fire": {
+            "delete": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Fire a member",
+                "operationId": "1c6738d979614fac07f737967d3822a4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the member",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member fired successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Member has\\'t been one of the teem."
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Member not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Member not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
         "/api/workspaces/{id}/sections": {
             "get": {
                 "tags": [
                     "Sections"
                 ],
                 "summary": "Get a sections of workspace by ID of workspace",
-                "operationId": "c85ea2c1b57a635c0d7d5810a55fe5b7",
+                "operationId": "2e5bf9d5d38cba71b204c2237dd2d0e4",
                 "parameters": [
                     {
                         "name": "id",
@@ -1878,7 +2520,7 @@
                     "Sections"
                 ],
                 "summary": "Create a new section",
-                "operationId": "7ae7ba4f2e3250b3e4b83b7819881fa8",
+                "operationId": "959f35af58427c6b4132654b7674d264",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1971,7 +2613,7 @@
                     "Sections"
                 ],
                 "summary": "Get a section by ID",
-                "operationId": "3a95241bd3299c57d5715551211f10d9",
+                "operationId": "03fef938505c01325804b96ba78ffd72",
                 "parameters": [
                     {
                         "name": "id",
@@ -2055,7 +2697,7 @@
                     "Sections"
                 ],
                 "summary": "Update a section",
-                "operationId": "b86a1fe679caf92e18ee24494a6e9f17",
+                "operationId": "d4ce7ef4b59a0964170ec45415d29930",
                 "parameters": [
                     {
                         "name": "id",
@@ -2149,7 +2791,7 @@
                     "Sections"
                 ],
                 "summary": "Delete a section",
-                "operationId": "b9efa5fd005bd058ebdafa21127ffb35",
+                "operationId": "c40ccb2abd36e5b18c68353ca6c0e282",
                 "parameters": [
                     {
                         "name": "id",
@@ -2236,7 +2878,7 @@
                     "User"
                 ],
                 "summary": "Get user profile",
-                "operationId": "70138a74c55dc08a2b72633f184f2036",
+                "operationId": "eb2f86e4f0247c8680c3ca377bd58cd7",
                 "responses": {
                     "200": {
                         "description": "Profile retrieved successfully",
@@ -2331,7 +2973,7 @@
                     "User"
                 ],
                 "summary": "Update user profile",
-                "operationId": "4c0d1f14e40eb6ac2c76106cfb21435a",
+                "operationId": "c12aee124439a475ec1682f547b8b5a1",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2465,7 +3107,7 @@
                     "User"
                 ],
                 "summary": "Delete user profile",
-                "operationId": "a3a536f25aa84d10538f0d64429d9703",
+                "operationId": "f81505fd710d57e69b2547864c5c5bdb",
                 "responses": {
                     "200": {
                         "description": "Profile deleted successfully",
@@ -2535,13 +3177,13 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/warehouse/{type}": {
+        "/api/workspaces/{id}/warehouse": {
             "get": {
                 "tags": [
                     "Warehouse"
                 ],
                 "summary": "Get a warehouse details of workspace by ID of workspace",
-                "operationId": "5021ab92702e3af800937876df71e9da",
+                "operationId": "8b43277b73d487d9b3e1f61152ef4850",
                 "parameters": [
                     {
                         "name": "id",
@@ -2619,7 +3261,7 @@
                     "Warehouse"
                 ],
                 "summary": "Create a new warehouse Inventory",
-                "operationId": "cd8ba57a0ad334b2023a663e85526f82",
+                "operationId": "0be528b568e2f0d728415ea0bf50a5a3",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2712,7 +3354,7 @@
                     "Warehouse"
                 ],
                 "summary": "Update a warehouse",
-                "operationId": "396043a5c403dcd4db93e923003b040b",
+                "operationId": "5da18471ad17d8defff1f2ba20f02ea1",
                 "parameters": [
                     {
                         "name": "id",
@@ -2806,7 +3448,7 @@
                     "Warehouse"
                 ],
                 "summary": "Delete a Inventory",
-                "operationId": "ea01ae97154b83f76c35fa6d37c11e20",
+                "operationId": "4b518c03f54292e6a970745f3d1e9fb9",
                 "parameters": [
                     {
                         "name": "id",
@@ -2893,7 +3535,7 @@
                     "Workspaces"
                 ],
                 "summary": "Get all workspaces",
-                "operationId": "0677bce380242fa2b4931acdae245aa4",
+                "operationId": "851fe9807e049419ef7d39d8d4b2c3c7",
                 "responses": {
                     "200": {
                         "description": "List of workspaces retrieved successfully",
@@ -2949,7 +3591,7 @@
                     "Workspaces"
                 ],
                 "summary": "Create a new workspace",
-                "operationId": "309f1fcf4d543474998b882c775ae8cd",
+                "operationId": "aaf9b77d4749b7474d0d00494558b7f8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3042,7 +3684,7 @@
                     "Workspaces"
                 ],
                 "summary": "Get a workspace by ID",
-                "operationId": "f94621a1bc5081f8b0710b71600a1517",
+                "operationId": "f057678ab83ae2b0088e2d7159207407",
                 "parameters": [
                     {
                         "name": "id",
@@ -3126,7 +3768,7 @@
                     "Workspaces"
                 ],
                 "summary": "Update a workspace",
-                "operationId": "0914dd8ed43821a3f5ef8e3516b7b7e3",
+                "operationId": "c190c0a32ee7bd6ec3cb573af594bc28",
                 "parameters": [
                     {
                         "name": "id",
@@ -3220,7 +3862,7 @@
                     "Workspaces"
                 ],
                 "summary": "Delete a workspace",
-                "operationId": "63b6aae085ed97b4764201994abc6cba",
+                "operationId": "976eebced68c0d809c02f8befddbe526",
                 "parameters": [
                     {
                         "name": "id",
@@ -3460,6 +4102,24 @@
                 },
                 "type": "object"
             },
+            "EmailVerificationRequest": {
+                "required": [
+                    "email",
+                    "code"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "example@gmail.com"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "129912"
+                    }
+                },
+                "type": "object"
+            },
             "CategoryStoreRequest": {
                 "required": [
                     "title",
@@ -3515,10 +4175,6 @@
                         "type": "string",
                         "example": "some decription"
                     },
-                    "unit": {
-                        "type": "string",
-                        "example": "unit"
-                    },
                     "quantity": {
                         "type": "integer",
                         "example": "11"
@@ -3555,10 +4211,6 @@
                     "description": {
                         "type": "string",
                         "example": "some decription"
-                    },
-                    "unit": {
-                        "type": "string",
-                        "example": "unit"
                     },
                     "quantity": {
                         "type": "integer",
@@ -3635,6 +4287,55 @@
                     "quantity": {
                         "type": "integer",
                         "example": "11, 12, 13"
+                    }
+                },
+                "type": "object"
+            },
+            "InviteMembersRequest": {
+                "required": [
+                    "email",
+                    "rule",
+                    "section_id",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "example@example.com"
+                    },
+                    "rule": {
+                        "type": "string",
+                        "example": "Chef, Assistant Chef, Trainee"
+                    },
+                    "section_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "workspace_id": {
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "MemberUpdateRequest": {
+                "required": [
+                    "rule",
+                    "section_id",
+                    "workspace_id"
+                ],
+                "properties": {
+                    "rule": {
+                        "type": "string",
+                        "example": "Chef, Assistant Chef, Trainee"
+                    },
+                    "section_id": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "workspace_id": {
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -3774,6 +4475,10 @@
             "description": "Endpoints for managing workspaces"
         },
         {
+            "name": "Email Verification",
+            "description": "Email Verification"
+        },
+        {
             "name": "Categories",
             "description": "Categories"
         },
@@ -3784,6 +4489,14 @@
         {
             "name": "Ingredients",
             "description": "Ingredients"
+        },
+        {
+            "name": "Invitations",
+            "description": "Invitations"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
         },
         {
             "name": "Sections",

@@ -1,23 +1,25 @@
-<?php 
+<?php
 namespace App\Rules\Traits;
 
-Trait UniqueTitleRulesTrait 
+Trait UniqueTitleRulesTrait
 {
     public function rule($model, $title, $workspace_id, $id)
     {
-        try{ 
-            $modeorkspace_id = $model::where('id',$id)->firstOrFail()->workspace_id;
-            if($workspace_id != $modeorkspace_id) {
-                return false;
+        try{
+            if ($id) {
+                $modelWorkspaceId = $model::where('id',$id)->firstOrFail()->workspace_id;
+                if($workspace_id != $modelWorkspaceId) {
+                    return false;
+                }
             }
             $query = $model::userWorkspace($workspace_id)->where('title', $title);
-            
+
             if($id) {
                 $query = $query->where('id', '<>', $id);
             }
             return $query->exists();
         } catch (\Exception $e) {
-            return false;
+            throw new \Exception($e->getMessage());
         }
     }
 }

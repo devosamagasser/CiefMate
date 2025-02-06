@@ -1,23 +1,26 @@
-<?php 
+<?php
 namespace App\Rules\Traits;
 
-Trait UniqueNameRulesTrait 
+Trait UniqueNameRulesTrait
 {
-    public function rule($model, $name, $id, $workspace_id = null)
+    public function rule($model, $name, $id = null, $workspace_id = null)
     {
         try{
-            $modeorkspace_id = $model::where('id',$id)->firstOrFail()->workspace_id;
-            if($workspace_id != $modeorkspace_id) {
-                return false;
+            if ($id) {
+                $modelWorkspaceId = $model::where('id',$id)->firstOrFail()->workspace_id;
+                if($workspace_id != $modelWorkspaceId) {
+                    return false;
+                }
             }
-            $query = $model::userWorkspaces($workspace_id)->where('name', $name);
-            
+
+            $query = $model::userWorkspace($workspace_id)->where('name', $name);
+
             if($id) {
                 $query = $query->where('id', '<>', $id);
             }
             return $query->exists();
         } catch (\Exception $e) {
-            return false;
+            throw new \Exception($e->getMessage());
         }
     }
 }

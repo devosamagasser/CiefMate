@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Traits;
 
 use App\Facades\FileHandeler;
@@ -29,10 +29,10 @@ Trait ControllerTraits
         }
     }
 
-    public function updateWithFile($attr, $request, $model = null, $path = null, $exten = 'jpg')
+    public function updateWithFile($fileAttrName, $request, $model, $pathStoring, $filExt = 'jpg')
     {
-        if ($request->has($attr)) {
-            return $this->updateWith($attr, $model->$attr, $path, $request, $exten);
+        if ($request->has($fileAttrName)) {
+            return $this->updateWith($fileAttrName, $model->$fileAttrName, $pathStoring, $request, $filExt);
         }
         return $this->updatedDataFormated($request);
     }

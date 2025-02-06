@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Models\Trait;
 
-use App\Models\Workspace;
+use App\Modules\Workspaces\Workspace;
 
-trait BelongsToWorkspaceTrait 
+trait BelongsToWorkspaceTrait
 {
     public function scopeUserWorkspace($query,$workspace = null)
     {

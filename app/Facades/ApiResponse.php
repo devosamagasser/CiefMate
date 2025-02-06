@@ -2,7 +2,7 @@
 
 namespace App\Facades;
 
-use App\Http\Controllers\Facades\ApiResponseController;
+use App\Facades\FacadesLogic\ApiResponseController;
 use Illuminate\Support\Facades\Facade;
 
 class ApiResponse extends Facade

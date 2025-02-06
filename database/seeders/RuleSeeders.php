@@ -12,5 +12,14 @@ class RuleSeeders extends Seeder
      */
     public function run(): void
     {
+        $colors = [
+            ['name' => 'Brown', 'code' => '#A52A2A'],
+            ['name' => 'Cyan', 'code' => '#00FFFF'],
+            ['name' => 'Magenta', 'code' => '#FF00FF'],
+        ];
+
+        foreach ($colors as $color) {
+            \App\Models\Rule::create($color);
+        }
     }
 }

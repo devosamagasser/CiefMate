@@ -2,7 +2,7 @@
 
 namespace App\Facades;
 
-use App\Http\Controllers\Facades\FileHandelerController;
+use App\Facades\FacadesLogic\FileHandelerController;
 use Illuminate\Support\Facades\Facade;
 
 class FileHandeler extends Facade

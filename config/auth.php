@@ -43,6 +43,10 @@ return [
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'users',
+        ],
+        'members' => [
+            'driver' => 'sanctum',
+            'provider' => 'members',
         ]
     ],
 
@@ -66,7 +70,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => \App\Modules\Users\User::class,
+        ],
+        'members' => [
+            'driver' => 'eloquent',
+            'model' => \App\Modules\Members\Member::class,
         ],
 
         // 'users' => [

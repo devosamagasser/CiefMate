@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique()->nullable();
+            $table->string('password');
+            $table->boolean('verified')->default(false);
             $table->string('avatar')->default('default.jpg');
             $table->enum('provider',['email','google'])->default('email');
+            $table->enum('rules',['Chef', 'Assistant Chef', 'Trainee', 'Owner', 'Guest'])->default('Guest');
             $table->string('provider_id')->nullable();
-            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

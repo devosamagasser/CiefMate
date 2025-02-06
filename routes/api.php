@@ -1,16 +1,18 @@
 <?php
 
+use App\Modules\{Auth\AuthController,
+    Auth\SocialLoginController,
+    Categories\CategoryController,
+    Equipments\EquipmentController,
+    Ingredients\IngredentsController,
+    Invitations\InvitationController,
+    Members\MemberController,
+    Sections\SectionController,
+    Users\UsersController,
+    Warehouses\WarehouseController,
+    Workspaces\WorkspaceController};
+use App\Modules\Auth\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-        UsersController
-        ,SectionController
-        ,CategoryController
-        ,EquipmentController
-        ,WarehouseController
-        ,WorkspaceController
-        ,IngredentsController
-    };
-use App\Http\Controllers\Auth\{AuthController,SocialLoginController};
 
 
 /*
@@ -25,22 +27,25 @@ use App\Http\Controllers\Auth\{AuthController,SocialLoginController};
 */
 
 
-Route::post('auth/register',[AuthController::class,'register']);
-Route::post('auth/login',[AuthController::class,'login']);
-Route::get('auth/{provider}/redirect',[SocialLoginController::class,'redirect']);
-Route::get('auth/{provider}/callback',[SocialLoginController::class,'callBack']);
-
+Route::middleware('guest')->group(function () {
+    Route::post('auth/register', [AuthController::class, 'register']);
+    Route::post('auth/login', [AuthController::class, 'login']);
+    Route::post('otp-verification', [EmailVerificationController::class, 'otpVerification']);
+    Route::post('resend-otp', [EmailVerificationController::class, 'reSendOtp']);
+    Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect']);
+    Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callBack']);
+});
 Route::middleware('auth:sanctum')->group(function () {
-    Route::delete('/logout',[AuthController::class,'logout']);
-    
+    Route::delete('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
+
     Route::prefix('user')->controller(UsersController::class)->group(function () {
         Route::get('/profile','profile');
         Route::put('/update','update');
         Route::delete('/destroy','destroy');
     });
 
-
     Route::apiResource('workspaces', WorkspaceController::class);
+
     Route::prefix('workspaces/{id}')->group(function () {
         Route::get('categories',[CategoryController::class,'index']);
         Route::get('sections',[SectionController::class,'index']);
@@ -52,10 +57,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('category',CategoryController::class)->except(['index']);
 
     Route::apiResource('section',SectionController::class)->except(['index']);
-    
+
     Route::apiResource('warehouse',WarehouseController::class)->except(['index','show']);
-    
+
     Route::apiResource('ingredient',IngredentsController::class)->except(['index']);
-    
+
     Route::apiResource('equipment',EquipmentController::class)->except(['index']);
+
+    Route::post('/invitation',[InvitationController::class,'invite']);
+
+    Route::apiResource('member',MemberController::class)->only(['index','update']);
+    Route::delete('member/{id}/fire',[MemberController::class,'fire']);
+
 });
+Route::get('invitation/{id}/accept',[InvitationController::class,'accept'])->name('accept.invitation');
+
