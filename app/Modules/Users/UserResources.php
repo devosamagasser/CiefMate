@@ -20,8 +20,8 @@ class UserResources extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'rule' => $this->rules,
-            'team' => $this->section()->name ?? null ,
-            'workspace' => $this->workspace()->name ?? null ,
+            'team' => $this->section->title ?? null ,
+            'workspace' => $this->workspace->name ?? null ,
             'avatar' => config('app.url').'/images/'.$this->avatar,
         ];
     }

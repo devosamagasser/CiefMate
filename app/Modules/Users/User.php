@@ -28,7 +28,10 @@ class User extends Authenticatable
         'provider',
         'provider_id',
         'password',
-        'avatar'
+        'avatar',
+        'rules',
+        'workspace_id',
+        'section_id',
     ];
 
     /**

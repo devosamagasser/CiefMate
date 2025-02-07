@@ -35,7 +35,7 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect']);
     Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callBack']);
 });
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum','verified'])->group(function () {
     Route::delete('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
     Route::prefix('user')->controller(UsersController::class)->group(function () {

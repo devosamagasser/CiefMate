@@ -209,6 +209,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Otp' => \Ichtrojan\Otp\Otp::class,
+        'verified' => \App\Http\Middleware\UserVirifiedMiddleware::class,
     ])->toArray(),
 
 ];

@@ -7,9 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Invitations\Request\InviteMembersRequest;
 use App\Modules\Users\User;
 use App\Notifications\SendInvitation;
-use http\Env\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InvitationController extends Controller
@@ -139,7 +137,7 @@ class InvitationController extends Controller
             return ApiResponse::notFound('Invitation not found');
         } catch (\Exception $e) {
             DB::rollBack();
-            return ApiResponse::serverError();
+            return ApiResponse::serverError($e->getMessage());
         }
     }
 
@@ -150,7 +148,7 @@ class InvitationController extends Controller
             $user->update([
                 'workspace_id' => $invitation->workspace_id,
                 'section_id' => $invitation->section_id,
-                'rules' => $invitation->rule,
+                'rules' => $invitation->rules,
             ]);
             $invitation->delete();
         } catch (ModelNotFoundException $e) {
