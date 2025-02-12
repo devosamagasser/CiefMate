@@ -45,20 +45,12 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-//        $this->renderable(function (AuthenticationException $e, $request) {
-//            return ApiResponse::unauthrized();
-//        });
-//
-//        $this->renderable(function (ModelNotFoundException $e, $request) {
-//            return ApiResponse::notFound('Not found');
-//        });
-//
-//        $this->renderable(function (NotFoundHttpException $e, $request) {
-//            return ApiResponse::notFound('Not found');
-//        });
-//
-//        $this->renderable(function (\Exception $e, $request) {
-//            return ApiResponse::serverError($e->getMessage());
-//        });
+        $this->renderable(function (AuthenticationException $e, $request) {
+            return ApiResponse::unauthrized();
+        });
+
+        $this->renderable(function (\Exception $e, $request) {
+            return ApiResponse::serverError($e->getMessage());
+        });
     }
 }

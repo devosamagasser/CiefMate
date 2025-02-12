@@ -26,7 +26,7 @@ class RegisterRequest extends AbstractApiRequest
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|unique:users,phone',
             'password' => 'required|string',
-            'avatar' => 'image|mimes:jpeg,png,jpg|max:2048'
+            'avatar' => 'image|mimes:jpeg,png,jpg|max:5000'
         ];
     }
 }

@@ -63,10 +63,10 @@ class UsersController extends Controller
      *     )
      * )
      */
-    public function profile(Request $request)
+    public function profile()
     {
         try {
-            $user = $request->user();
+            $user = request()->user();
             return ApiResponse::success(new UserResources($user));
 
         } catch (ModelNotFoundException $e) {

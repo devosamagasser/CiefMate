@@ -18,7 +18,6 @@ use App\Modules\Workspaces\Rules\ExistsWorkSpaceRule;
  *     @OA\Property(property="unit", type="string", example="l, ml, g, unit, kg"),
  *     @OA\Property(property="quantity", type="integer", example="11, 12, 13"),
  *     @OA\Property(property="warehouse_id", type="string", example="1", description="ID of the warehouse"),
- *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
  * )
  */
 class IngredientStoreRequest extends AbstractApiRequest
@@ -38,10 +37,9 @@ class IngredientStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'warehouse_id' => ['nullable', 'integer', new ExistsWarehouseRule()],
-            'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRule()],
             'name' => ['required', 'string', 'max:255',new UniqueIngredientNameRule($workspace_id)],
             'cover' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'description' => ['nullable', 'string', 'max:1000'],

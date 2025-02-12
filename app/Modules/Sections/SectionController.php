@@ -14,17 +14,10 @@ class SectionController extends Controller
     use ControllerTraits;
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/sections",
+     *     path="/api/section",
      *     summary="Get a sections of workspace by ID of workspace",
      *     tags={"Sections"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="List of sections of workspaces retrieved successfully",
@@ -47,10 +40,11 @@ class SectionController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
-            $sections = Section::userWorkspace()->where('workspace_id',$workspace_id)->get();
+            $workspace_id = request()->user()->workspace_id;
+            $sections = Section::where('workspace_id',$workspace_id)->get();
             return ApiResponse::success($sections);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('this section not found');
@@ -103,7 +97,10 @@ class SectionController extends Controller
     public function store(SectionStoreRequest $request)
     {
         try {
-            $section = Section::create($request->all());
+            $section = Section::create([
+                'title' => $request->title,
+                'workspace_id' => request()->user()->workspace_id
+            ]);
             return ApiResponse::created($section);
         } catch (\Exception $e) {
             return ApiResponse::serverError();
@@ -275,7 +272,8 @@ class SectionController extends Controller
     public function destroy($id)
     {
         try {
-            Section::userWorkspace()->where('id', $id)->firstOrFail()->delete();
+            $section = Section::userWorkspace()->where('id', $id)->firstOrFail();
+            $section->delete();
             return ApiResponse::message('Section deleted successfully');
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('Section not found');

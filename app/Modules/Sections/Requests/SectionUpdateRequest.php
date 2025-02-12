@@ -4,7 +4,6 @@ namespace App\Modules\Sections\Requests;
 
 use App\Http\Requests\AbstractApiRequest;
 use App\Modules\Sections\Rules\UniqueSectionTitleRule;
-use App\Modules\Workspaces\Rules\BelongsToWorkSpaceRule;
 
 /**
  * @OA\Schema(
@@ -12,7 +11,6 @@ use App\Modules\Workspaces\Rules\BelongsToWorkSpaceRule;
  *     type="object",
  *     required={"title", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="section 1"),
- *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
  * )
  */
 class SectionUpdateRequest extends AbstractApiRequest
@@ -33,10 +31,9 @@ class SectionUpdateRequest extends AbstractApiRequest
     public function rules(): array
     {
         $id = request()->section;
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'title' => ['required', 'string', 'max:255', new UniqueSectionTitleRule($workspace_id, $id)],
-            'workspace_id' => ['required', 'integer', new BelongsToWorkSpaceRule(Section::class, $workspace_id, $id)],
         ];
     }
 }

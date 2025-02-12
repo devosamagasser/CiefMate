@@ -13,7 +13,6 @@ use App\Modules\Workspaces\Rules\ExistsWorkSpaceRule;
  *     required={"rule", "section_id", "workspace_id"},
  *     @OA\Property(property="rule", type="string", example="Chef, Assistant Chef, Trainee"),
  *     @OA\Property(property="section_id", type="integer", example="1"),
- *     @OA\Property(property="workspace_id", type="integer", example="1"),
  * )
  */
 class MemberUpdateRequest extends AbstractApiRequest
@@ -33,9 +32,8 @@ class MemberUpdateRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspaceId = request('workspace_id');
+        $workspaceId = request()->user()->workspace_id;
         return [
-            'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRule()],
             'section_id' => ['required', 'integer', new ExistsSectionRule($workspaceId)],
             'rule' => ['required', 'string', 'in:Chef,Assistant Chef,Trainee'],
         ];

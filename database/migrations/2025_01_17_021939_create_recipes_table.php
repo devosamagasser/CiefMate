@@ -17,10 +17,10 @@ return new class extends Migration
             $table->text('description');
             $table->string('cover');
             $table->string('preparation_time');
-            $table->tinyInteger('calories')->default(0);
-            $table->tinyInteger('protein')->default(0);
-            $table->tinyInteger('fats')->default(0);
-            $table->tinyInteger('carbs')->default(0);
+            $table->integer('calories')->default(0);
+            $table->integer('protein')->default(0);
+            $table->integer('fats')->default(0);
+            $table->integer('carbs')->default(0);
             $table->enum('status', ['favourite', 'completed', 'draft'])->default('draft');
             $table->foreignId('workspace_id')->constrained('workspaces')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();

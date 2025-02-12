@@ -13,7 +13,6 @@ use App\Rules\UniqueTitleRole;
  *     type="object",
  *     required={"title","workspace_id"},
  *     @OA\Property(property="title", type="string", example="flavors"),
- *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
  * )
  */
 class WarehouseUpdateRequest extends AbstractApiRequest
@@ -34,10 +33,9 @@ class WarehouseUpdateRequest extends AbstractApiRequest
     public function rules(): array
     {
         $id = request()->warehouse;
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'title' => ['required', 'string', 'max:255', new UniqueWarehouseTitleRule($workspace_id, $id)],
-            'workspace_id' => ['required', 'integer', new BelongsToWorkSpaceRule(Warehouse::class, $workspace_id, $id)],
         ];
     }
 }

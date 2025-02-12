@@ -14,7 +14,6 @@ use App\Modules\Workspaces\Rules\ExistsWorkSpaceRule;
  *     @OA\Property(property="email", type="string", example="example@example.com"),
  *     @OA\Property(property="rule", type="string", example="Chef, Assistant Chef, Trainee"),
  *     @OA\Property(property="section_id", type="integer", example="1"),
- *     @OA\Property(property="workspace_id", type="integer", example="1"),
  * )
  */
 class InviteMembersRequest extends AbstractApiRequest
@@ -34,11 +33,10 @@ class InviteMembersRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspaceId = request('workspace_id');
+        $workspace_id = request()->user()->workspace_id;
         return [
             'email' => ['required', 'string', 'email', 'max:255','exists:users,email'],
-            'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRule()],
-            'section_id' => ['required', 'integer', new ExistsSectionRule($workspaceId)],
+            'section_id' => ['required', 'integer', new ExistsSectionRule($workspace_id)],
             'rule' => ['required', 'string', 'in:Chef,Assistant Chef,Trainee'],
         ];
     }

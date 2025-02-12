@@ -5,6 +5,7 @@ namespace App\Modules\Workspaces;
 use App\Facades\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\ControllerTraits;
+use App\Modules\Users\User;
 use App\Modules\Workspaces\Requests\WorkspaceStoreRequest;
 use App\Modules\Workspaces\Requests\WorkspaceUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -164,6 +165,7 @@ class WorkspaceController extends Controller
     {
         try {
             $workspace = Workspace::userWorkspaces()->where('id', $id)->firstOrFail();
+            User::where('id', request()->user()->id)->firstOrFail()->update(['workspace_id' => $id]);
             return ApiResponse::success(new WorkspacesResource($workspace));
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('Workspace not found');

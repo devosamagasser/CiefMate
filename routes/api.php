@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RegisteredInWorkspaceMiddleware;
 use App\Modules\{Auth\AuthController,
     Auth\SocialLoginController,
     Categories\CategoryController,
@@ -7,7 +8,8 @@ use App\Modules\{Auth\AuthController,
     Ingredients\IngredentsController,
     Invitations\InvitationController,
     Members\MemberController,
-    Sections\SectionController,
+    Recipes\RecipeController,
+    RecipesComments\RecipeCommentsController,
     Users\UsersController,
     Warehouses\WarehouseController,
     Workspaces\WorkspaceController};
@@ -35,6 +37,7 @@ Route::middleware('guest')->group(function () {
     Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect']);
     Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callBack']);
 });
+
 Route::middleware(['auth:sanctum','verified'])->group(function () {
     Route::delete('/logout',[AuthController::class,'logout'])->middleware('auth:sanctum');
 
@@ -44,31 +47,23 @@ Route::middleware(['auth:sanctum','verified'])->group(function () {
         Route::delete('/destroy','destroy');
     });
 
-    Route::apiResource('workspaces', WorkspaceController::class);
-
-    Route::prefix('workspaces/{id}')->group(function () {
-        Route::get('categories',[CategoryController::class,'index']);
-        Route::get('sections',[SectionController::class,'index']);
-        Route::get('warehouse',[WarehouseController::class,'index']);
-        Route::get('ingredients',[IngredentsController::class,'index']);
-        Route::get('equipments',[EquipmentController::class,'index']);
+    Route::post('workspaces', [WorkspaceController::class,'store']);
+    Route::get('workspaces/{workspace}', [WorkspaceController::class,'show']);
+    Route::middleware(RegisteredInWorkspaceMiddleware::class)->group(function () {
+        Route::apiResource('workspaces', WorkspaceController::class)->except(['store','show']);
+        Route::apiResource('category',CategoryController::class);
+        Route::apiResource('section',RecipeCommentsController::class);
+        Route::apiResource('warehouse',WarehouseController::class)->except(['show']);
+        Route::apiResource('ingredient',IngredentsController::class);
+        Route::apiResource('equipments',EquipmentController::class);
+        Route::apiResource('recipes',RecipeController::class)->except(['update']);
+        Route::post('recipes/{recipe}',[RecipeController::class,'update']);
+        Route::post('/invitation',[InvitationController::class,'invite']);
+        Route::apiResource('member',MemberController::class)->except(['store','destroy']);
+        Route::delete('member/{id}/fire',[MemberController::class,'fire']);
+        Route::post('comments',[RecipeCommentsController::class,'store']);
+        Route::get('comments/{recipe}',[RecipeCommentsController::class,'show']);
     });
-
-    Route::apiResource('category',CategoryController::class)->except(['index']);
-
-    Route::apiResource('section',SectionController::class)->except(['index']);
-
-    Route::apiResource('warehouse',WarehouseController::class)->except(['index','show']);
-
-    Route::apiResource('ingredient',IngredentsController::class)->except(['index']);
-
-    Route::apiResource('equipment',EquipmentController::class)->except(['index']);
-
-    Route::post('/invitation',[InvitationController::class,'invite']);
-
-    Route::apiResource('member',MemberController::class)->only(['index','update']);
-    Route::delete('member/{id}/fire',[MemberController::class,'fire']);
-
 });
 Route::get('invitation/{id}/accept',[InvitationController::class,'accept'])->name('accept.invitation');
 

@@ -17,17 +17,10 @@ class EquipmentController extends Controller
 
    /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/equipments",
+     *     path="/api/equipment",
      *     summary="Get a equipments of workspace by ID of workspace",
      *     tags={"Equipments"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Parameter(
      *         name="type",
      *         in="path",
@@ -57,11 +50,12 @@ class EquipmentController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
+            $workspace_id = request()->uesr()->workspace_id;
             $equipments = Equipment::with(['warehouse','workspace'])
-                ->userWorkspace($workspace_id)
+                ->where('workspace_id',$workspace_id)
                 ->WarehouseFilter()->get();
                 return ApiResponse::success(EquipmentsResources::collection($equipments));
         } catch (ModelNotFoundException $e) {
@@ -115,12 +109,19 @@ class EquipmentController extends Controller
     public function store(EquipmentStoreRequest $request)
     {
         try {
+            $data = [
+                'warehouse_id'  => $request->warehouse_id,
+                'workspace_id'  => request()->user()->workspace_id,
+                'name' => $request->name,
+                'cover' => $request->cover,
+                'description'  => $request->description,
+                'quantity' => $request->quantity,
+            ];
             if($request->has('cover')){
-                $cover = FileHandeler::storeFile($request->cover, 'equipments', 'jpg');
-                $request->merge(['cover' => $cover]);
+                $data['cover']  = FileHandeler::storeFile($request->cover, 'equipments', 'jpg');
             }
-            $equipment = Equipment::create($request->all());
-            FileHandeler::storeFile($equipment);
+
+            $equipment = Equipment::create($data);
             return ApiResponse::created(new EquipmentsResources($equipment));
         } catch (\Exception $e) {
             return ApiResponse::serverError($e->getMessage());
@@ -293,7 +294,8 @@ class EquipmentController extends Controller
     public function destroy($id)
     {
         try {
-            Equipment::userWorkspace()->where('id', $id)->firstOrFail()->delete();
+            $equipment = Equipment::userWorkspace()->where('id', $id)->firstOrFail();
+            $equipment->delete();
             return ApiResponse::message('equipment deleted successfully');
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('equipment not found');

@@ -36,7 +36,7 @@ class IngredientUpdateRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         $id = request()->ingredient;
         return [
             'name' => ['required', 'string', 'max:255', new UniqueIngredientNameRule($workspace_id, $id)],

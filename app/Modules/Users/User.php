@@ -32,6 +32,7 @@ class User extends Authenticatable
         'rules',
         'workspace_id',
         'section_id',
+        'verified',
     ];
 
     /**
@@ -69,7 +70,7 @@ class User extends Authenticatable
 
     public function scopeSectionFilter(Builder $builder)
     {
-        $section_id = request()->section_id ?? null;
+        $section_id = request()->query('section_id') ?? null;
         $builder->when($section_id,function ($builder,$value){
             $builder->where('section_id',$value);
         });

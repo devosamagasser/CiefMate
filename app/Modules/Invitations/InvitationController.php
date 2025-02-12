@@ -68,7 +68,7 @@ class InvitationController extends Controller
 
             $invitation = Invitation::create([
                 'user_id' => $member->id,
-                'workspace_id' => $request->workspace_id,
+                'workspace_id' => request()->user()->workspace_id,
                 'section_id' => $request->section_id,
                 'rules' => $request->rule,
             ]);

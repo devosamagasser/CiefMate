@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('cover');
+            $table->string('cover')->nullable();
             $table->string('preparation_time');
             $table->enum('status', ['done', 'on-work'])->default('on-work');
-            $table->enum('piriority', ['high', 'medium', 'low'])->default('medium');
+            $table->enum('priority', ['high', 'medium', 'low'])->default('medium');
             $table->timestamps();
         });
     }

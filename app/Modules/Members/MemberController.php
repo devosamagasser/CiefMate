@@ -15,17 +15,10 @@ class MemberController extends Controller
     use ControllerTraits;
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/Members",
+     *     path="/api/member",
      *     summary="Get all members of workspace by ID of workspace",
      *     tags={"Members"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Parameter(
      *         name="section_id",
      *         in="path",
@@ -55,12 +48,12 @@ class MemberController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
+            $workspace_id = request()->user()->workspace_id;
             $members = User::with('section','workspace')
                 ->sectionFilter()
-                ->userWorkspace()
                 ->where('workspace_id',$workspace_id)
                 ->get();
             return ApiResponse::success(UserResources::collection($members));
@@ -69,6 +62,55 @@ class MemberController extends Controller
         } catch (\Exception $e) {
             return ApiResponse::serverError($e->getMessage());
         }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/member/{id}",
+     *     summary="Get a specific member by ID",
+     *     tags={"Members"},
+     *     security={{"Bearer":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the member",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Member retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 ref="#/components/schemas/User"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Member not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Member not found"),
+     *             @OA\Property(property="code", type="integer", example=404)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="An unexpected error occurred",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="An unexpected error occurred"),
+     *             @OA\Property(property="code", type="integer", example=500)
+     *         )
+     *     )
+     * )
+     */
+    public function show($id)
+    {
+        $member = User::userWorkspace()->where('id', $id)->firstOrFail();
+        return ApiResponse::success(new UserResources($member));
     }
 
     /**
@@ -131,7 +173,7 @@ class MemberController extends Controller
     public function update(MemberUpdateRequest $request, $id)
     {
         try {
-            $member = User::userWorkspace()->where('id', $id)->firstOrFail();
+            $member = User::userWorkspace($request->user()->workspace_id)->where('id', $id)->firstOrFail();
             $data = $this->updatedDataFormated($request,$request->only(['section_id','rule']));
             $member->fill($data);
             if($member->isDirty()){
@@ -202,20 +244,4 @@ class MemberController extends Controller
         }
     }
 
-    private function invitationProcess($invitation)
-    {
-        try {
-            $user = User::findOrFail($invitation->user_id);
-            $user->update([
-                'workspace_id' => $invitation->workspace_id,
-                'section_id' => $invitation->section_id,
-                'rules' => $invitation->rule,
-            ]);
-            $invitation->delete();
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException($e->getMessage());
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-    }
 }

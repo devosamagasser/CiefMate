@@ -15,17 +15,10 @@ class CategoryController extends Controller
     use ControllerTraits;
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/categories",
+     *     path="/api/categorie",
      *     summary="Get a categories of workspace by ID of workspace",
      *     tags={"Categories"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="List of categories of workspaces retrieved successfully",
@@ -48,10 +41,11 @@ class CategoryController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
-            $categories = Category::userWorkspace()->where('workspace_id',$workspace_id)->get();
+            $workspace_id = request()->uesr()->workspace_id;
+            $categories = Category::where('workspace_id',$workspace_id)->get();
             return ApiResponse::success($categories);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('this category not found');
@@ -104,10 +98,14 @@ class CategoryController extends Controller
     public function store(CategoryStoreRequest $request)
     {
         try {
-            $category = Category::create($request->all());
+
+            $category = Category::create([
+                'title' => $request->title,
+                'workspace_id' => request()->user()->workspace_id
+            ]);
             return ApiResponse::created($category);
         } catch (\Exception $e) {
-            return ApiResponse::serverError();
+            return ApiResponse::serverError($e->getMessage());
         }
     }
 
@@ -276,7 +274,8 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            Category::userWorkspace()->where('id', $id)->firstOrFail()->delete();
+            $category = Category::userWorkspace()->where('id', $id)->firstOrFail();
+            $category->delete();
             return ApiResponse::message('Category deleted successfully');
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('Category not found');

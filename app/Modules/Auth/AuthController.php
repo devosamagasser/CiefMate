@@ -211,10 +211,14 @@ class AuthController extends Controller
 
     private function checkUser($credentials): mixed
     {
-        $user = User::whereEmail($credentials['email'])->firstOrFail();
-        if (! Hash::check($credentials['password'],$user->password))
+        try {
+            $user = User::whereEmail($credentials['email'])->firstOrFail();
+            if (! Hash::check($credentials['password'],$user->password))
+                return false;
+            return $user;
+        } catch (ModelNotFoundException $e) {
             return false;
-        return $user;
+        }
     }
 
 

@@ -16,17 +16,10 @@ class WarehouseController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/warehouse",
+     *     path="/api/warehouse",
      *     summary="Get a warehouse details of workspace by ID of workspace",
      *     tags={"Warehouse"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Parameter(
      *         name="type",
      *         in="path",
@@ -56,15 +49,16 @@ class WarehouseController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
+            $workspace_id = request()->user()->workspace_id;
             $type = request()->type ?? null;
-            $warehoouse = Warehouse::userWorkspace()
-                            ->where('workspace_id',$workspace_id)
-                            ->where('type',$type)
-                            ->get();
-            return ApiResponse::success($warehoouse);
+            $warehouse = Warehouse::where('workspace_id',$workspace_id)
+                            ->when($type, function ($query, $type) {
+                                $query->where('type',$type);
+                            })->get();
+            return ApiResponse::success($warehouse);
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('this warehouse not found');
         } catch (\Exception $e) {
@@ -116,7 +110,11 @@ class WarehouseController extends Controller
     public function store(WarehouseStoreRequest $request)
     {
         try {
-            $warehouse = Warehouse::create($request->all());
+            $warehouse = Warehouse::create([
+                'title' => $request->title,
+                'workspace_id' => request()->user()->workspace_id,
+                'type' => $request->type
+            ]);
             return ApiResponse::created($warehouse);
         } catch (\Exception $e) {
             return ApiResponse::serverError($e->getMessage());
@@ -232,7 +230,8 @@ class WarehouseController extends Controller
     public function destroy($id)
     {
         try {
-            Warehouse::userWorkspace()->where('id', $id)->firstOrFail()->delete();
+            $warehouse = Warehouse::userWorkspace()->where('id', $id)->firstOrFail();
+            $warehouse->delete();
             return ApiResponse::message('Inventory deleted successfully');
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('Inventory not found');

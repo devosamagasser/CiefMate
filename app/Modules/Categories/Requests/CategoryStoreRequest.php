@@ -12,7 +12,6 @@ use App\Modules\Workspaces\Rules\ExistsWorkSpaceRule;
  *     type="object",
  *     required={"title", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="category 1"),
- *     @OA\Property(property="workspace_id", type="integer", example="1", description="ID of the workspace")
  * )
  */
 class CategoryStoreRequest extends AbstractApiRequest
@@ -32,10 +31,9 @@ class CategoryStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'title' => ['required', 'string', 'max:255', new UniqueCategoryTitleRule($workspace_id)],
-            'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRule()],
         ];
     }
 }

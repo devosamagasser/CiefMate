@@ -4,8 +4,6 @@ namespace App\Modules\Sections\Requests;
 
 use App\Http\Requests\AbstractApiRequest;
 use App\Modules\Sections\Rules\UniqueSectionTitleRule;
-use App\Modules\Workspaces\Rules\ExistsWorkSpaceRule;
-use App\Rules\UniqueTitleRole;
 
 
 /**
@@ -14,7 +12,6 @@ use App\Rules\UniqueTitleRole;
  *     type="object",
  *     required={"title", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="Section #"),
- *     @OA\Property(property="workspace_id", type="string", example="1", description="ID of the workspace")
  * )
  */
 class SectionStoreRequest extends AbstractApiRequest
@@ -34,10 +31,9 @@ class SectionStoreRequest extends AbstractApiRequest
      */
     public function rules(): array
     {
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'title' => ['required', 'string', 'max:255', new UniqueSectionTitleRule($workspace_id)],
-            'workspace_id' => ['required', 'integer', new ExistsWorkSpaceRule()],
         ];
     }
 }

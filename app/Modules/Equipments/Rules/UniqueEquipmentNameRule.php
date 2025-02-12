@@ -33,7 +33,7 @@ class UniqueEquipmentNameRule implements ValidationRule
                 $fail("The equipment is already exists.");
             }
         } catch (\Exception $e) {
-            $fail('bad format');
+            $fail($e->getMessage());
         }
     }
 }

@@ -4,7 +4,7 @@ namespace App\Modules\Auth;
 
 use App\Facades\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmailVerificationRequest;
+use App\Modules\Auth\Requests\EmailVerificationRequest;
 use App\Modules\Users\User;
 use App\Notifications\EmailVerificationNotification;
 use Ichtrojan\Otp\Otp;
@@ -18,7 +18,7 @@ class EmailVerificationController extends Controller
      * @OA\Post(
      *     path="/api/otp-verification",
      *     summary="Verify OTP for email verification",
-     *     tags={"Email Verification"},
+     *     tags={"Auth"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/EmailVerificationRequest")
@@ -48,26 +48,30 @@ class EmailVerificationController extends Controller
      */
     public function otpVerification(EmailVerificationRequest $request)
     {
-        $otp = (new Otp())->validate($request->email, $request->code);
+        return DB::transaction(function () use ($request) {
+            $otp = (new Otp())->validate($request->email, $request->code);
 
-        if (!$otp->status) {
-            return ApiResponse::validationError([
-                'code' => 'This code is invalid'
-            ]);
-        }
+            if (!$otp->status) {
+                return ApiResponse::validationError([
+                    'code' => 'This code is invalid'
+                ]);
+            }
 
-        $user = User::where('email', $request->email)->firstOrFail();
-        $user->verified = true;
-        $user->save();
+            $user = User::where('email', $request->email)->firstOrFail();
+            $user->verified = true;
+            $user->save();
 
-        return ApiResponse::message('Verified successfully.');
+            DB::table('otps')->where('identifier', $request->email)->delete();
+
+            return ApiResponse::message('Verified successfully.');
+        });
     }
 
     /**
      * @OA\Post(
      *     path="/api/resend-otp",
      *     summary="Resend OTP for email verification",
-     *     tags={"Email Verification"},
+     *     tags={"Auth"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

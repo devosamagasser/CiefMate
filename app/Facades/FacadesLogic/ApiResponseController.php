@@ -28,7 +28,7 @@ class ApiResponseController extends Controller
         return Response($response,$code);
     }
 
-    public function notFound($message)
+    public function notFound($message = 'Not Found')
     {
         return $this->apiFormat(
             null,

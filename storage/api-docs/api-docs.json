@@ -369,7 +369,7 @@
         "/api/otp-verification": {
             "post": {
                 "tags": [
-                    "Email Verification"
+                    "Auth"
                 ],
                 "summary": "Verify OTP for email verification",
                 "operationId": "a485a678b6f5a00b47e208ef7e9573bf",
@@ -438,7 +438,7 @@
         "/api/resend-otp": {
             "post": {
                 "tags": [
-                    "Email Verification"
+                    "Auth"
                 ],
                 "summary": "Resend OTP for email verification",
                 "operationId": "c800ec910a7f4c68d45a65accdf3a115",
@@ -652,24 +652,13 @@
                 }
             }
         },
-        "/api/workspaces/{id}/categories": {
+        "/api/categorie": {
             "get": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Get a categories of workspace by ID of workspace",
-                "operationId": "7719ede33cf1c759d50efa8e4d748b92",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the workspace",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "operationId": "cc9d8622ecd2d39e26c391bfb7e503ab",
                 "responses": {
                     "200": {
                         "description": "List of categories of workspaces retrieved successfully",
@@ -1079,23 +1068,14 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/equipments": {
+        "/api/equipment": {
             "get": {
                 "tags": [
                     "Equipments"
                 ],
                 "summary": "Get a equipments of workspace by ID of workspace",
-                "operationId": "b0b3acaa1a616251cd8c72e63047c6d5",
+                "operationId": "c1192fbe9403cea33ab1d08045c7b911",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the workspace",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
                     {
                         "name": "type",
                         "in": "path",
@@ -1515,23 +1495,14 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/ingredients": {
+        "/api/ingredient": {
             "get": {
                 "tags": [
                     "Ingredients"
                 ],
                 "summary": "Get a ingredients of workspace by ID of workspace",
-                "operationId": "6b03ba50fd8766cb660fcdd8114476b8",
+                "operationId": "65f7a8cc237260bdd6c473ac40ca9f2c",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the workspace",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
                     {
                         "name": "type",
                         "in": "path",
@@ -1591,9 +1562,7 @@
                         "Bearer": []
                     }
                 ]
-            }
-        },
-        "/api/ingredient": {
+            },
             "post": {
                 "tags": [
                     "Ingredients"
@@ -2152,23 +2121,14 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/Members": {
+        "/api/member": {
             "get": {
                 "tags": [
                     "Members"
                 ],
                 "summary": "Get all members of workspace by ID of workspace",
-                "operationId": "783c17d4f0373531aa56018915347278",
+                "operationId": "b7f544a101cbded61f5f69d2befa91a2",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the workspace",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
                     {
                         "name": "section_id",
                         "in": "path",
@@ -2231,6 +2191,90 @@
             }
         },
         "/api/member/{id}": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Get a specific member by ID",
+                "operationId": "8979acbbfa9ecd7eb222fca710060e66",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the member",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Member retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Member not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Member not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
             "put": {
                 "tags": [
                     "Members"
@@ -2445,24 +2489,705 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/sections": {
+        "/api/comments": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Create a new section",
+                "operationId": "6d82e4baa2a74c0f642eee9430a6ca94",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CommentnStoreRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Section created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Comment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation Error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "The comment field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/comments/{id}": {
             "get": {
                 "tags": [
-                    "Sections"
+                    "Comments"
                 ],
-                "summary": "Get a sections of workspace by ID of workspace",
-                "operationId": "2e5bf9d5d38cba71b204c2237dd2d0e4",
+                "summary": "Get a comments by recipe ID",
+                "operationId": "e1c37268f3ed9a5bd6cc6f19cfd06477",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the workspace",
+                        "description": "ID of the Recipe",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Comments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/Comment"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Comments not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Comments not found"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "An unexpected error occurred",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An unexpected error occurred"
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/recipes": {
+            "get": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Retrieve all recipes",
+                "description": "Get a list of recipes.",
+                "operationId": "edf9a2dcd22485d45640e45874e30a5b",
+                "responses": {
+                    "200": {
+                        "description": "List of recipes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecipeResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Create a new recipe",
+                "operationId": "createRecipe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "category_id",
+                                    "workspace_id",
+                                    "status",
+                                    "preparation_time",
+                                    "calories",
+                                    "protein",
+                                    "carbs",
+                                    "fats",
+                                    "cover"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Recipe 1"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "A delicious recipe"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "workspace_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "completed"
+                                    },
+                                    "preparation_time": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "calories": {
+                                        "type": "integer",
+                                        "example": 200
+                                    },
+                                    "protein": {
+                                        "type": "integer",
+                                        "example": 15
+                                    },
+                                    "carbs": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "fats": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "cover": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "ingredients[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            5,
+                                            4
+                                        ]
+                                    },
+                                    "ingredients_quantities[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            2,
+                                            3
+                                        ]
+                                    },
+                                    "ingredients_units[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "grams",
+                                            "cups"
+                                        ]
+                                    },
+                                    "equipments[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            3,
+                                            4
+                                        ]
+                                    },
+                                    "equipments_quantities[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            "1",
+                                            "2"
+                                        ]
+                                    },
+                                    "instructions_media[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        },
+                                        "example": [
+                                            "erik-mclean-bGWVhFY1gH0-unsplash.jpg",
+                                            "another-image.jpg"
+                                        ]
+                                    },
+                                    "instructions_timer[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            10,
+                                            5
+                                        ]
+                                    },
+                                    "instructions_descriptions[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Chop the onions",
+                                            "Boil water"
+                                        ]
+                                    },
+                                    "instructions_order[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recipe created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/recipes/{id}": {
+            "get": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Get a single recipe",
+                "description": "Retrieve a specific recipe.",
+                "operationId": "825816cf4f9a817c823caed307b3442e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipe details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Update a recipe",
+                "description": "Update a recipe.",
+                "operationId": "5f598b8cd80b435f11f697d83a6eba31",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "cover",
+                                    "preparation_time",
+                                    "category_id",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Recipe 1"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "A delicious recipe"
+                                    },
+                                    "cover": {
+                                        "description": "Cover image (jpeg, png, jpg, gif, svg)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "preparation_time": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "calories": {
+                                        "type": "integer",
+                                        "example": 200
+                                    },
+                                    "protein": {
+                                        "type": "integer",
+                                        "example": 15
+                                    },
+                                    "fats": {
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "carbs": {
+                                        "type": "integer",
+                                        "example": 30
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "completed",
+                                            "draft"
+                                        ],
+                                        "example": "completed"
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "ingredients[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    },
+                                    "ingredients_units[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "grams",
+                                            "cups",
+                                            "pieces"
+                                        ]
+                                    },
+                                    "ingredients_quantities[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "100",
+                                            "2",
+                                            "3"
+                                        ]
+                                    },
+                                    "equipments[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            5,
+                                            6
+                                        ]
+                                    },
+                                    "equipments_quantities[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "1",
+                                            "2"
+                                        ]
+                                    },
+                                    "instructions_order[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2,
+                                            3
+                                        ]
+                                    },
+                                    "instructions_media[]": {
+                                        "description": "Instruction media files (jpeg, png, jpg, mp4)",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "instructions_timer[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "10 min",
+                                            "5 min"
+                                        ]
+                                    },
+                                    "instructions_descriptions[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "example": [
+                                            "Chop the onions",
+                                            "Boil water"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recipe updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Recipes"
+                ],
+                "summary": "Delete a recipe",
+                "description": "Delete a recipe.",
+                "operationId": "0ab71e0d9115b8d209a5c69a0999c054",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recipe deleted successfully"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/section": {
+            "get": {
+                "tags": [
+                    "Sections"
+                ],
+                "summary": "Get a sections of workspace by ID of workspace",
+                "operationId": "72b2faadb036d8cc35009614922da624",
                 "responses": {
                     "200": {
                         "description": "List of sections of workspaces retrieved successfully",
@@ -2512,9 +3237,7 @@
                         "Bearer": []
                     }
                 ]
-            }
-        },
-        "/api/section": {
+            },
             "post": {
                 "tags": [
                     "Sections"
@@ -3177,23 +3900,14 @@
                 ]
             }
         },
-        "/api/workspaces/{id}/warehouse": {
+        "/api/warehouse": {
             "get": {
                 "tags": [
                     "Warehouse"
                 ],
                 "summary": "Get a warehouse details of workspace by ID of workspace",
-                "operationId": "8b43277b73d487d9b3e1f61152ef4850",
+                "operationId": "ebaf3c81ec943f7c8b46b800805cf88e",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the workspace",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
                     {
                         "name": "type",
                         "in": "path",
@@ -3253,9 +3967,7 @@
                         "Bearer": []
                     }
                 ]
-            }
-        },
-        "/api/warehouse": {
+            },
             "post": {
                 "tags": [
                     "Warehouse"
@@ -4102,6 +4814,177 @@
                 },
                 "type": "object"
             },
+            "RecipeResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Recipe 1"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A delicious recipe"
+                    },
+                    "cover": {
+                        "type": "string",
+                        "example": "cover.jpg"
+                    },
+                    "preparation_time": {
+                        "description": "Preparation time in minutes",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "calories": {
+                        "description": "Calories per serving",
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "protein": {
+                        "description": "Protein content in grams",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "fats": {
+                        "description": "Fat content in grams",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "carbs": {
+                        "description": "Carbohydrate content in grams",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "completed",
+                            "draft"
+                        ],
+                        "example": "completed"
+                    },
+                    "category_id": {
+                        "description": "ID of the associated category",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "ingredients": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IngredientResource"
+                        }
+                    },
+                    "equipments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EquipmentResource"
+                        }
+                    },
+                    "instructions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InstructionResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "IngredientResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Flour"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "grams"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 200
+                    }
+                },
+                "type": "object"
+            },
+            "EquipmentResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Oven"
+                    },
+                    "cover": {
+                        "type": "string",
+                        "example": "oven.jpg"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Electric oven for baking"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "example": "piece"
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "InstructionResource": {
+                "properties": {
+                    "order": {
+                        "description": "Step order in the recipe",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Mix the ingredients thoroughly"
+                    },
+                    "media": {
+                        "description": "Image or video file for the instruction",
+                        "type": "string",
+                        "example": "step1.jpg"
+                    },
+                    "timer": {
+                        "description": "Suggested time for this step",
+                        "type": "string",
+                        "example": "10 min"
+                    }
+                },
+                "type": "object"
+            },
+            "Comment": {
+                "properties": {
+                    "comment": {
+                        "type": "string",
+                        "example": "Mix the ingredients thoroughly"
+                    },
+                    "user": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "EmailVerificationRequest": {
                 "required": [
                     "email",
@@ -4129,11 +5012,6 @@
                     "title": {
                         "type": "string",
                         "example": "category 1"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "integer",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4147,10 +5025,6 @@
                     "title": {
                         "type": "string",
                         "example": "Category #"
-                    },
-                    "workspace_id": {
-                        "type": "integer",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4181,11 +5055,6 @@
                     },
                     "warehouse_id": {
                         "description": "ID of the warehouse",
-                        "type": "string",
-                        "example": "1"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
                         "type": "string",
                         "example": "1"
                     }
@@ -4251,11 +5120,6 @@
                         "description": "ID of the warehouse",
                         "type": "string",
                         "example": "1"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "string",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4310,10 +5174,6 @@
                     "section_id": {
                         "type": "integer",
                         "example": "1"
-                    },
-                    "workspace_id": {
-                        "type": "integer",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4332,10 +5192,198 @@
                     "section_id": {
                         "type": "integer",
                         "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "CommentnStoreRequest": {
+                "required": [
+                    "comment",
+                    "recipe_id"
+                ],
+                "properties": {
+                    "comment": {
+                        "type": "string",
+                        "example": "comment dd "
                     },
-                    "workspace_id": {
+                    "recipe_id": {
                         "type": "integer",
                         "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "RecipeUpdateRequest": {
+                "required": [
+                    "title",
+                    "workspace_id",
+                    "description",
+                    "cover",
+                    "preparation_time",
+                    "category_id",
+                    "status"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Recipe 1"
+                    },
+                    "workspace_id": {
+                        "description": "ID of the workspace",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A delicious recipe"
+                    },
+                    "cover": {
+                        "description": "Image file for the recipe (jpeg, png, jpg, gif, svg)",
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "preparation_time": {
+                        "description": "Preparation time in minutes (must be at least 1)",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "calories": {
+                        "description": "Calories per serving (optional, must be at least 1)",
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "protein": {
+                        "description": "Protein content (optional, must be at least 1)",
+                        "type": "integer",
+                        "example": 15
+                    },
+                    "fats": {
+                        "description": "Fat content (optional, must be at least 1)",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "carbs": {
+                        "description": "Carbohydrate content (optional, must be at least 1)",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "status": {
+                        "description": "Recipe status (must be either 'completed' or 'draft')",
+                        "type": "string",
+                        "enum": [
+                            "completed",
+                            "draft"
+                        ],
+                        "example": "completed"
+                    },
+                    "category_id": {
+                        "description": "ID of the associated category (must exist in the database)",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "ingredients": {
+                        "description": "List of ingredient IDs (optional, must exist in the database)",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    "ingredients_units": {
+                        "description": "Measurement units for each ingredient (must match ingredient count)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "grams",
+                            "cups",
+                            "pieces"
+                        ]
+                    },
+                    "ingredients_quantities": {
+                        "description": "Quantities for each ingredient (must match ingredient count)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "100",
+                            "2",
+                            "3"
+                        ]
+                    },
+                    "equipments": {
+                        "description": "List of equipment IDs (optional, must exist in the database)",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            5,
+                            6
+                        ]
+                    },
+                    "equipments_quantities": {
+                        "description": "Quantities for each equipment item (must match equipment count)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "1",
+                            "2"
+                        ]
+                    },
+                    "instructions_order": {
+                        "description": "Order of instructions (must be unique, required if instructions exist)",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    "instructions_media": {
+                        "description": "Instruction media files (jpeg, png, jpg for images, mp4 for videos)",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "example": [
+                            "instruction1.jpg",
+                            "step2.mp4"
+                        ]
+                    },
+                    "instructions_timer": {
+                        "description": "Timer for each instruction step (must match instructions count)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "10 min",
+                            "5 min"
+                        ]
+                    },
+                    "instructions_descriptions": {
+                        "description": "Descriptions for each instruction step (must match instructions count)",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "Chop the onions",
+                            "Boil water"
+                        ]
                     }
                 },
                 "type": "object"
@@ -4349,11 +5397,6 @@
                     "title": {
                         "type": "string",
                         "example": "Section #"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "string",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4367,11 +5410,6 @@
                     "title": {
                         "type": "string",
                         "example": "section 1"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "string",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4391,11 +5429,6 @@
                         "description": "type of Inventory",
                         "type": "string",
                         "example": "equipment || ingredient"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "string",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4409,11 +5442,6 @@
                     "title": {
                         "type": "string",
                         "example": "flavors"
-                    },
-                    "workspace_id": {
-                        "description": "ID of the workspace",
-                        "type": "string",
-                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -4467,16 +5495,16 @@
             "description": "Authentication endpoints"
         },
         {
+            "name": "Recipes",
+            "description": "API Endpoints for managing recipes"
+        },
+        {
             "name": "User",
             "description": "Endpoints for managing user profile"
         },
         {
             "name": "Workspaces",
             "description": "Endpoints for managing workspaces"
-        },
-        {
-            "name": "Email Verification",
-            "description": "Email Verification"
         },
         {
             "name": "Categories",
@@ -4497,6 +5525,10 @@
         {
             "name": "Members",
             "description": "Members"
+        },
+        {
+            "name": "Comments",
+            "description": "Comments"
         },
         {
             "name": "Sections",

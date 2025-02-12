@@ -17,17 +17,10 @@ class IngredentsController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/workspaces/{id}/ingredients",
+     *     path="/api/ingredient",
      *     summary="Get a ingredients of workspace by ID of workspace",
      *     tags={"Ingredients"},
      *     security={{"Bearer":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the workspace",
-     *         @OA\Schema(type="integer")
-     *     ),
      *     @OA\Parameter(
      *         name="type",
      *         in="path",
@@ -57,11 +50,12 @@ class IngredentsController extends Controller
      *     )
      * )
      */
-    public function index($workspace_id)
+    public function index()
     {
         try {
+            $workspace_id = request()->user()->workspace_id;
             $ingredients = Ingredent::with(['warehouse','workspace'])
-                ->userWorkspace($workspace_id)
+                ->where('workspace_id',$workspace_id)
                 ->WarehouseFilter()->get();
                 return ApiResponse::success(IngredientsResources::collection($ingredients));
         } catch (ModelNotFoundException $e) {
@@ -115,12 +109,19 @@ class IngredentsController extends Controller
     public function store(IngredientStoreRequest $request)
     {
         try {
+            $data = [
+                'workspace_id' => $request->user()->workspace_id,
+                'warehouse_id' => $request->warehouse_id,
+                'name' => $request->name,
+                'cover' => $request->cover,
+                'description' => $request->description,
+                'unit' => $request->unit,
+                'quantity' => $request->quantity,
+            ];
             if($request->has('cover')){
-                $cover = FileHandeler::storeFile($request->cover, 'ingredients', 'jpg');
-                $request->merge(['cover' => $cover]);
+                $data['cover'] = FileHandeler::storeFile($request->cover, 'ingredients', 'jpg');
             }
-            $ingredient = Ingredent::create($request->all());
-            FileHandeler::storeFile($ingredient);
+            $ingredient = Ingredent::create($data);
             return ApiResponse::created(new IngredientsResources($ingredient));
         } catch (\Exception $e) {
             return ApiResponse::serverError($e->getMessage());
@@ -293,7 +294,8 @@ class IngredentsController extends Controller
     public function destroy($id)
     {
         try {
-            Ingredent::userWorkspace()->where('id', $id)->firstOrFail()->delete();
+            $ingredient = Ingredent::userWorkspace()->where('id', $id)->firstOrFail();
+            $ingredient->delete();
             return ApiResponse::message('ingredient deleted successfully');
         } catch (ModelNotFoundException $e) {
             return ApiResponse::notFound('ingredient not found');

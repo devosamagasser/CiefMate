@@ -3,9 +3,7 @@
 namespace App\Modules\Categories\Requests;
 
 use App\Http\Requests\AbstractApiRequest;
-use App\Modules\Categories\Category;
 use App\Modules\Categories\Rules\UniqueCategoryTitleRule;
-use App\Modules\Workspaces\Rules\BelongsToWorkSpaceRule;
 
 
 /**
@@ -14,7 +12,6 @@ use App\Modules\Workspaces\Rules\BelongsToWorkSpaceRule;
  *     type="object",
  *     required={"title", "workspace_id"},
  *     @OA\Property(property="title", type="string", example="Category #"),
- *     @OA\Property(property="workspace_id", type="integer", example="1"),
  * )
  */
 class CategoryUpdateRequest extends AbstractApiRequest
@@ -35,10 +32,9 @@ class CategoryUpdateRequest extends AbstractApiRequest
     public function rules(): array
     {
         $id = request()->category;
-        $workspace_id = request()->workspace_id;
+        $workspace_id = request()->user()->workspace_id;
         return [
             'title' => ['required', 'string', 'max:255', new UniqueCategoryTitleRule($workspace_id, $id)],
-            'workspace_id' => ['required', 'integer', new BelongsToWorkSpaceRule(Category::class, $workspace_id, $id)],
         ];
     }
 }

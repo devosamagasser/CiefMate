@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('recipe_id')->constrained('recipes')->cascadeOnDelete();
             $table->foreignId('equipment_id')->constrained('equipments')->cascadeOnDelete();
+            $table->float('quantity')->nullable();
         });
     }
 
